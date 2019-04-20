@@ -1,0 +1,33 @@
+#+TITLE: Nani - A Quick and Minimal Social Platform
+#+AUTHOR: Benjamin Zaporzan
+#+DATE: 2019-04-14
+#+EMAIL: benzaporzan@gmail.com
+#+LANGUAGE: en
+#+OPTIONS: H:2 num:t toc:t \n:nil ::t |:t ^:t f:t tex:t
+
+/Currently in alpha/
+
+*nani*, which means 'what' in japanese, is a minimal social platform
+that you can quickly deploy and configure for small social
+networks.
+
+* Features
+  - Similar to reddit, it contains discussion boards:
+    /discussion/:name
+
+    Users who login can choose to create new discussion boards, and
+    create posts, which get upvoted or downvoted. Additionally, they
+    can comment on these posts
+
+  - Users must login to create new discussion boards, create threads
+    in discussion boards, and create comments for threads
+
+  - Pre-designated admins exist, and moderators consist of the
+    discussion board owner, and anyone they assign as moderators
+
+  - Moderators can remove threads, they can remove comments and they
+    can blacklist users from particular discussion boards
+
+* Wishful Features
+  - Images for threads, Videos for threads
+  - Live chat channels for each discussion board created
