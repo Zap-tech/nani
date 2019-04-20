@@ -16,12 +16,15 @@
 
    ;; Fifql Handler
    [nani.server.fifql.handler :refer [fifql-handler]]
-   [fifiql.core :as fifiql]))
+   [fifiql.core :as fifiql]
+
+   ;; Pages
+   [nani.server.page.home :as page.home]))
 
 
 ;; Create our routes. The fifql ring handler supports both GET and POST requests
 (defroutes app-routes
-  (GET "/" req "Hello World!")
+  (GET "/" req #(page.home/main % config))
   (GET "/fifql" req fifql-handler)
   (POST "/fifql" req fifql-handler)
   (GET "/fifiql" req (fifiql/handle-request

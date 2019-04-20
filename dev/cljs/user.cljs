@@ -1,7 +1,6 @@
 (ns cljs.user
   (:require
-   [taoensso.timbre :as log]
-   [mount.core :as mount :refer [defstate]]
+   [taoensso.timbre :as log :include-macros true]
 
    ;; Fifiql Development
    [fifiql.init]
@@ -10,18 +9,16 @@
    [nani.core]))
 
 
-(enable-console-print!)
+(log/merge-config!
+ {:min-level nil})
+
+
+(def development-config
+  {:name "Development"})
+   
 
 
 (defn start []
-  (log/debug "Nani Development Environment Started!")
-  (mount/start))
-
-
-(defn stop []
-  (mount/stop))
-
-
-(defn restart []
-  (stop)
-  (start))
+  (enable-console-print!)
+  (log/info "Nani Development Environment Started!")
+  (nani.core/init (merge nani.core/production-config development-config)))

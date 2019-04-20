@@ -1,4 +1,4 @@
-#+TITLE: Nani - A Quick and Minimal Social Platform
+#+TITLE: Nani - A Minimal Social Platform
 #+AUTHOR: Benjamin Zaporzan
 #+DATE: 2019-04-14
 #+EMAIL: benzaporzan@gmail.com

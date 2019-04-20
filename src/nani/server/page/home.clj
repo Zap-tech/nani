@@ -8,7 +8,7 @@
 (def prod-init-script "nani.core.start();")
 
 
-(defn home [{:keys [dev-mode?] :or {:dev-mode? false}}]
+(defn main [req {:keys [dev-mode?] :or {dev-mode? false}}]
   (let [init-script (if dev-mode? dev-init-script prod-init-script)]
     (hiccup/html
      [:html
@@ -19,3 +19,4 @@
         [:div.loading "Loading..."]]
        (include-js "/js/compiled/nani.js")
        [:script {:type "text/javascript"} init-script]]])))
+

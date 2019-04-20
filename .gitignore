@@ -11,4 +11,9 @@ pom.xml.asc
 .hgignore
 .hg/
 resources/public/js/compiled
+resources/public/css
 nani.fif
+figwheel_server.log
+node_modules
+package.json
+package-lock.json

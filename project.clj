@@ -39,7 +39,7 @@
   :cljsbuild {:builds
               [{:id "dev"
                 :source-paths ["src" "dev"]
-                :figwheel true
+                :figwheel {:on-jsload "nani.core/rerender"}
                 :compiler {:main cljs.user
                            :asset-path "/js/compiled/out"
                            :output-to "resources/public/js/compiled/nani.js"
