@@ -1,19 +1,24 @@
 (ns nani.dev.user
   (:require
+   [clojure.pprint :refer [pprint]]
    [mount.core :as mount :refer [defstate]]
 
    ;; Mount Components
-   [nani.server.http :as http]))
+   [nani.server.http :refer [http]]
+   [nani.server.config :refer [config]]))
 
 
 (def help-message "
   Nani Development Environment
  
   # Life Cycle Functions
-  (start)   -- Start Nani Server
-  (stop)    -- Stop Nani Server
-  (restart) -- Restart Nani Server
-  (help)    -- Show this help message
+  (start)         -- Start Nani Server
+  (stop)          -- Stop Nani Server
+  (restart)       -- Restart Nani Server
+
+  # Misc.
+  (print-config)  -- Print the Configuration
+  (help)          -- Show this help message
   ")
 
 
@@ -34,4 +39,5 @@
   (println help-message))
 
 
-(help)
+(defn print-config []
+  (pprint config))

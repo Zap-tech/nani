@@ -10,8 +10,10 @@
 
                  [bidi "2.1.5"]                      ;; Routing Library (cljs)
                  [compojure "1.6.1"]                 ;; Routing Library (clj)
+                 [environ "1.1.0"]                   ;; Configuration
                  [hiccup "1.0.5"]                    ;; HTML Generation
                  [http-kit "2.3.0"]                  ;; HTTP Server
+                 [me.raynes/fs "1.4.6"]              ;; Filesystem Utilities
                  [mount "0.1.16"]                    ;; Dependency Management Library
                  [re-frame "0.10.6"]                 ;; CLJS React State Management for Reagent
                  [reagent "0.8.1"]                   ;; React Wrapper Library

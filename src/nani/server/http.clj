@@ -1,6 +1,9 @@
 (ns nani.server.http
   (:require
    [mount.core :as mount :refer [defstate]]
+   
+   ;; Mount Components
+   [nani.server.config :refer [config]]
 
    ;; High-performance Web Server
    [org.httpkit.server :as httpkit]
@@ -36,8 +39,9 @@
 
 
 (defn start []
-  (println "Starting server on port: 8080")
-  (httpkit/run-server #'app {:port 8080}))
+  (let [{:keys [url port]} (-> config :http-server)]
+    (println "Starting server on port: " port)
+    (httpkit/run-server #'app {:port port})))
 
 
 (defstate http

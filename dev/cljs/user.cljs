@@ -6,8 +6,11 @@
    ;; Fifiql Development
    [fifiql.init]
    
-   ;; Pulling in the main mount point
+   ;; Mount Points
    [nani.core]))
+
+
+(enable-console-print!)
 
 
 (defn start []
@@ -22,6 +25,3 @@
 (defn restart []
   (stop)
   (start))
-
-
-(enable-console-print!)
