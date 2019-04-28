@@ -9,6 +9,11 @@
 (def ^:dynamic *default-config-path* "nani.fif")
 (def default-config
   {:http-server {:url "127.0.0.1" :port 8080}
+   :database
+   {:location "resources/nani.db" ;; :memory: for in-memory database
+    :schema "resources/sql/schema.sql"
+    :force? false
+    :migrations []}
    :dev-mode? false})
 
 
