@@ -3,6 +3,7 @@
    [me.raynes.fs :as fs]
    [mount.core :as mount :refer [defstate]]
    [environ.core :refer [env]]
+   [taoensso.encore :refer [merge-deep]]
    [fif.core :as fif]))
 
 
@@ -22,7 +23,7 @@
   (println "Retrieving Configuration...")
   (let [config-path (or (env :nani-config-path) *default-config-path*)]
     (if (fs/file? config-path)
-      (->> (slurp config-path) fif/reval-string first (merge default-config))
+      (->> (slurp config-path) fif/reval-string first (merge-deep default-config))
       default-config)))
 
 

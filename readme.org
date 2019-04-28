@@ -1,4 +1,3 @@
-
 #+TITLE: Nani - A Minimal Social Platform
 #+AUTHOR: Benjamin Zaporzan
 #+DATE: 2019-04-14

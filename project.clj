@@ -10,6 +10,7 @@
 
                  [bidi "2.1.5"]                      ;; Routing Library (cljs)
                  [compojure "1.6.1"]                 ;; Routing Library (clj)
+                 [com.taoensso/encore "2.109.0"]     ;; Utility Library (clj/cljs)
                  [environ "1.1.0"]                   ;; Configuration
                  [hiccup "1.0.5"]                    ;; HTML Generation
                  [http-kit "2.3.0"]                  ;; HTTP Server
