@@ -21,4 +21,4 @@
 (defn start []
   (enable-console-print!)
   (log/info "Nani Development Environment Started!")
-  (nani.core/init (merge nani.core/production-config development-config)))
+  (nani.core/start (merge nani.core/production-config development-config)))

@@ -21,12 +21,12 @@
   (r/render [c-base-layout] (.querySelector js/document "#app")))
 
 
-(defn ^:export init
+(defn ^:export start
   ([{:keys [name]}]
    (log/info (str "Initializing Nani [" name "]"))
    (render)
    (re/dispatch-sync [::ui.event/init]))
-  ([] (init production-config)))
+  ([] (start production-config)))
 
 
 (defn rerender []
