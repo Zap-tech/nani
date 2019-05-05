@@ -14,8 +14,7 @@
 
 
 (def development-config
-  {:name "Development"})
-   
+  {:environment-name "Development"})
 
 
 (defn start []

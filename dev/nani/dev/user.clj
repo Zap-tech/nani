@@ -5,7 +5,9 @@
 
    ;; Mount Components
    [nani.server.http :refer [http]]
-   [nani.server.config :refer [config]]))
+   [nani.server.config :refer [config]]
+   [nani.server.db :refer [db]]
+   [nani.server.logging :refer [logging]]))
 
 
 (def help-message "

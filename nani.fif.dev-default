@@ -1,7 +1,19 @@
-{:http-server {:url "127.0.0.1" :port 8080}
+{;; The name of the environment
+ :environment-name "Development"
+
+ ;; Location of the HTTP Server, along with the port to serve it on
+ :http-server {:url "127.0.0.1" :port 8080}
+
+ ;; The SQLite database location in the filesystem, along with the
+ ;; location of the .sql schema file for intial database generation
  :database
- {:location "resources/nani.db" ;; :memory: for in-memory database
-    :schema "resources/sql/schema.sql"
-    :force? false
-    :migrations []}
- :dev-mode? true}
+ {:location "resources/nani.db" ;; ":memory:" for in-memory database
+  :migrations []} ;; List of script locations of migrations which are applied in order
+
+ ;; Setting dev-mode? to true will enable fifiql, and other helpful
+ ;; tooling.  Not recommended you enable this on a production server.
+ :dev-mode? true
+
+ ;; Logging options which are the same as timbre config options
+ ;; supplied to `merge-config!`
+ :logging {:min-level nil}}

@@ -14,7 +14,7 @@
 
 
 (def production-config
-  {:name "Production"})
+  {:environment-name "Production"})
 
 
 (defn ^:export render []

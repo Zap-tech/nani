@@ -6,6 +6,7 @@
    ;; Mount Components
    [nani.server.http]
    [nani.server.db]
+   [nani.server.logging]
    [nani.server.config :refer [config]]))
 
 
