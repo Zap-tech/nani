@@ -25,7 +25,8 @@
        user_id INTEGER NOT NULL PRIMARY KEY,
        user_name TEXT NOT NULL,
        full_name TEXT,
-       email TEXT
+       password_hash TEXT NOT NULL,
+       email TEXT NOT NULL UNIQUE
      )"}
 
    {:name "Discussion"
@@ -52,8 +53,10 @@
        comment_id INTEGER NOT NULL PRIMARY KEY,
        parent_id INTEGER, /* NULL if it doesn't have a parent */
        comment_text TEXT NOT NULL,
+       user_id INTEGER NOT NULL,
        post_id INTEGER NOT NULL,
-       FOREIGN KEY(post_id) REFERENCES Post(post_id)
+       FOREIGN KEY(post_id) REFERENCES Post(post_id),
+       FOREIGN KEY(user_id) REFERENCES NaniUser(user_id)
      )"}])
 
 
@@ -114,3 +117,19 @@
   (if (map? q)
     (jdbc/execute! db (sql/format q))
     (jdbc/execute! db q)))
+
+
+(defn insert! [& args]
+  (apply jdbc/insert! db args))
+
+
+(defn insert-multi! [& args]
+  (apply jdbc/insert-multi! db args))
+
+
+(defn update! [& args]
+  (apply jdbc/update! db args))
+
+
+(defn delete! [& args]
+  (apply jdbc/delete! db args))
