@@ -49,7 +49,7 @@
    
    {:name "PostComment"
     :creation-query
-    "CREATE TABLE IF NOT EXISTS PostComment (
+    "CREATE TABLE PostComment (
        comment_id INTEGER NOT NULL PRIMARY KEY,
        parent_id INTEGER, /* NULL if it doesn't have a parent */
        comment_text TEXT NOT NULL,
@@ -60,51 +60,74 @@
      )"}])
 
 
+(defn list-tables
+  "Lists all of the tables currently in the sqlite3 database."
+  [db]
+  (let [q "SELECT name FROM sqlite_master WHERE type = 'table'"
+        results (jdbc/query db q)]
+    (if (empty? results)
+      #{}
+      (->> results (map :name) set))))
+
+
+;; (list-tables db)
+
+
+(defn has-table? [db name]
+  (contains? (list-tables db) name))
+
+
+;; (has-table? "NaniUser")
+
+
 (defn create-tables! [db]
   (log/info "Creating Database Tables...")
   (doseq [{:keys [name creation-query]} schema]
-    (log/info "- Creating Table " name "...")
-    (jdbc/execute! db creation-query)))
+    (if-not (has-table? db name)
+      (do
+        (log/info "- Creating Table " name "...")
+        (jdbc/execute! db creation-query))
+      (log/info "- Table " name " already exists, skipping..."))))
 
 
 (defn drop-tables! [db]
   (doseq [{:keys [name creation-query]} (reverse schema)]
-    (log/info "- Dropping Table " name "...")
-    (jdbc/execute! db (str "DROP TABLE " name))))
+    (when (has-table? db name)
+      (log/info "- Dropping Table " name "...")
+      (jdbc/execute! db (str "DROP TABLE " name)))))
 
 
 (defn delete-database! []
-   (if-let [dbpath (-> config :database :location)]
-     (when (fs/file? dbpath)
-        (log/info "Deleting database: " dbpath "...")
-        (fs/delete dbpath))
-     (log/info "Attempted to delete database, but it does not exist.")))
+  (if-let [dbpath (-> config :database :location)]
+    (when (fs/file? dbpath)
+      (log/info "Deleting database: " dbpath "...")
+      (fs/delete dbpath))
+    (log/info "Attempted to delete database, but it does not exist.")))
 
 
 (defn start []
   (let [db {:classname "org.sqlite.JDBC"
             :subprotocol "sqlite"
             :subname (-> config :database :location)}]
-    (log/info "Starting Database... " db)
-    (create-tables! db)
-    db))
+    (let [conn (jdbc/get-connection db)
+          db (assoc db :connection conn)]
+      (log/info "Starting Database... " db)
+      (create-tables! db)
+      db)))
 
 
 (defn stop []
   (let [dev-mode? (-> config :dev-mode?)]
     (when dev-mode?
       (log/debug "In dev-mode, dropping tables...")
-      (drop-tables! db))))
+      (drop-tables! db))
+    (when-let [conn (:connection db)]
+      (.close conn))))
 
 
 ;;
 ;; Functions used with the mounted database
 ;;
-
-
-(defn list-tables []
-  (let [q "SELECT name FROM sqlite_master WHERE type='table'"]
-    (jdbc/query db q)))
 
 
 (defn query [q]

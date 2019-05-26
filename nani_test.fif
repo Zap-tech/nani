@@ -1,0 +1,6 @@
+{:environment-name "Testing"
+ :http-server {:url "127.0.0.1" :port 8080}
+ :database
+ {:location ":memory:"}
+ :dev-mode? true
+ :logging {:min-level nil}}
