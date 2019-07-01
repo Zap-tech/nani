@@ -14,7 +14,11 @@ UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
 LEIN_CMD = lein
 else
+ifeq ($(UNAME), Darwin)
+LEIN_CMD = lein
+else
 LEIN_CMD = lein.bat
+endif
 endif
 
 
