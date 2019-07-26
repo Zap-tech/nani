@@ -1,0 +1,60 @@
+#+TITLE: Nani Design Documents
+#+AUTHOR: Benjamin Zaporzan
+#+DATE: 2019-07-25
+#+EMAIL: benzaporzan@gmail.com
+#+LANGUAGE: en
+#+OPTIONS: H:2 num:t toc:t \n:nil ::t |:t ^:t f:t tex:t
+
+* Database Schema Design
+** Class Diagram
+   #+BEGIN_SRC plantuml :file database_schema.png
+
+   skinparam BackgroundColor #F3F4F9
+   skinparam RoundCorner 5
+   skinparam class {
+     BackgroundColor White
+     ArrowColor #F1B440
+     ArrowThickness 2
+     BorderColor #292D83
+   }   
+
+   title Nani Database Schema
+
+   class User << (T,brown) Table >> {
+     user_id : primary key
+     date_created : datetime
+     user_name : text not null unique
+     full_name text
+     password_hash text not null
+     email : text not null unique
+     biography : text
+   }
+
+   class Discussion << (T,brown) Table >> {
+     discussion_id integer not null primary key
+     name text not null
+   }
+
+   Discussion "1" *-- "*" Post
+   class Post << (T,brown) Table >> {
+     post_id integer not null primary key
+     post_title text not null
+     post_text text
+     post_type ('text', 'link') not null default('text')
+     discussion_id integer not null
+   }
+
+   User "1" *-- "*" PostComment
+   Post "1" *-- "*" PostComment
+   class PostComment << (T,brown) Table >>  {
+     comment_id integer not null primary key
+     parent_id integer
+     comment_text TEXT NOT NULL
+     user_id INTEGER NOT NULL
+     post_id INTEGER NOT NULL
+   }
+
+   #+END_SRC
+
+   #+RESULTS:
+   [[file:database_schema.png]]

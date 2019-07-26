@@ -23,7 +23,7 @@
     :creation-query
     "CREATE TABLE NaniUser (
        user_id INTEGER NOT NULL PRIMARY KEY,
-       user_name TEXT NOT NULL,
+       user_name TEXT NOT NULL UNIQUE,
        full_name TEXT,
        password_hash TEXT NOT NULL,
        email TEXT NOT NULL UNIQUE

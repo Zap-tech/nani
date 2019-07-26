@@ -45,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -74,7 +74,7 @@
        ry="0.26458332" />
     <g
        id="g835"
-       transform="translate(0,-14.287514)">
+       transform="matrix(1,0,0,0.66071424,0,14.793351)">
       <rect
          style="fill:#f9f9f9;stroke-width:0.26458332"
          id="rect831"
@@ -99,8 +99,8 @@
        id="rect18"
        width="85.526245"
        height="29.934185"
-       x="483.2233"
-       y="-18.378059"
+       x="271.54584"
+       y="-50.984943"
        rx="0.26458332"
        ry="0.26458332" />
     <g
@@ -125,5 +125,82 @@
          rx="0.26458332"
          ry="0.012363706" />
     </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="6.4144688"
+       y="38.817623"
+       id="text894"><tspan
+         sodipodi:role="line"
+         id="tspan892"
+         x="6.4144688"
+         y="38.817623"
+         style="font-size:25.39999962px;stroke-width:0.26458332">Nani</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="389.67899"
+       y="67.191162"
+       id="text898"><tspan
+         sodipodi:role="line"
+         id="tspan896"
+         x="389.67899"
+         y="67.191162"
+         style="stroke-width:0.26458332">bacon1989</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="461.78809"
+       y="66.062996"
+       id="text902"><tspan
+         sodipodi:role="line"
+         id="tspan900"
+         x="461.78809"
+         y="66.062996"
+         style="font-size:7.76111126px;stroke-width:0.26458332">(sign out)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="19.141331"
+       y="86.391594"
+       id="text906"><tspan
+         sodipodi:role="line"
+         id="tspan904"
+         x="19.141331"
+         y="86.391594"
+         style="stroke-width:0.26458332">Bletcher puts the blah in bleeking</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="201.95898"
+       y="85.322517"
+       id="text914"><tspan
+         sodipodi:role="line"
+         id="tspan912"
+         x="201.95898"
+         y="85.322517"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.3499999px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332">(us.gov)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="19.184313"
+       y="96.574699"
+       id="text918"><tspan
+         sodipodi:role="line"
+         id="tspan916"
+         x="19.184313"
+         y="96.574699"
+         style="font-size:7.05555534px;stroke-width:0.26458332">Submitted 2 Hours Ago by bacon1989 to /d/general</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="19.777945"
+       y="105.635"
+       id="text922"><tspan
+         sodipodi:role="line"
+         id="tspan920"
+         x="19.777945"
+         y="105.635"
+         style="stroke-width:0.26458332;font-size:7.05555556px">View Comments (10)</tspan></text>
   </g>
 </svg>
