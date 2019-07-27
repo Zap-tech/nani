@@ -20,7 +20,7 @@
 
    title Nani Database Schema
 
-   class User << (T,brown) Table >> {
+   class NaniUser << (T,brown) Table >> {
      user_id : primary key
      date_created : datetime
      user_name : text not null unique
@@ -35,6 +35,16 @@
      name text not null
    }
 
+   Discussion "1" *-- "*" DiscussionUserPrivilege
+   User "1" *-- "*" DiscussionUserPrivilege
+   class DiscussionUserPrivilege {
+     privilege_id integer not null primary key
+     user_id integer not null
+     discussion_id integer not null
+     privilege enumeration of ('none', 'moderator', 'admin', 'owner')
+     unique(user_id, discussion_id)
+   }
+
    Discussion "1" *-- "*" Post
    class Post << (T,brown) Table >> {
      post_id integer not null primary key
@@ -44,15 +54,16 @@
      discussion_id integer not null
    }
 
-   User "1" *-- "1" PostVote
+   NaniUser "1" *-- "1" PostVote
    Post "1" *-- "*" PostVote
    class PostVote << (T,brown) Table >> {
      vote_id integer not null primary key
+     post_id integer not null
      user_id integer not null
      is_upvote boolean
    }
 
-   User "1" *-- "*" PostComment
+   NaniUser "1" *-- "*" PostComment
    Post "1" *-- "*" PostComment
    class PostComment << (T,brown) Table >>  {
      comment_id integer not null primary key
@@ -62,11 +73,12 @@
      post_id INTEGER NOT NULL
    }
 
-   User "1" *-- "1" CommentVote
+   NaniUser "1" *-- "1" CommentVote
    PostComment "1" *-- "*" CommentVote
    class CommentVote << (T,brown) Table >> {
      vote_id integer not null primary key
      user_id integer not null
+     comment_id integer not null
      is_upvote boolean
    }
 

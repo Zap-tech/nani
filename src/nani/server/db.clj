@@ -36,6 +36,18 @@
        name TEXT NOT NULL
      )"}
 
+   {:name "DiscussionUserPrivilege"
+    :creation-query
+    "CREATE TABLE DiscussionUserPrivilege (
+       privilege_id INTEGER NOT NULL PRIMARY KEY,
+       user_id INTEGER NOT NULL,
+       discussion_id INTEGER NOT NULL,
+       privilege TEXT CHECK( privilege IN ('none', 'moderator', 'admin', 'owner') ) NOT NULL DEFAULT 'none',
+       UNIQUE(user_id, discussion_id),
+       FOREIGN KEY(discussion_id) REFERENCES Discussion(discussion_id),
+       FOREIGN KEY(user_id) REFERENCES NaniUser(user_id)
+     )"}
+
    {:name "Post"
     :creation-query
     "CREATE TABLE Post (
@@ -47,6 +59,18 @@
        FOREIGN KEY(discussion_id) REFERENCES Discussion(discussion_id)
      )"}
    
+   {:name "PostVote"
+    :creation-query
+    "CREATE TABLE PostVote (
+       vote_id INTEGER NOT NULL PRIMARY KEY,
+       user_id INTEGER NOT NULL,
+       post_id INTEGER NOT NULL,
+       is_upvote BOOLEAN,
+       UNIQUE(user_id, post_id),
+       FOREIGN KEY(post_id) REFERENCES Post(post_id),
+       FOREIGN KEY(user_id) REFERENCES NaniUser(user_id)
+     )"}
+
    {:name "PostComment"
     :creation-query
     "CREATE TABLE PostComment (
@@ -56,6 +80,18 @@
        user_id INTEGER NOT NULL,
        post_id INTEGER NOT NULL,
        FOREIGN KEY(post_id) REFERENCES Post(post_id),
+       FOREIGN KEY(user_id) REFERENCES NaniUser(user_id)
+     )"}
+
+   {:name "CommentVote"
+    :creation-query
+    "CREATE TABLE CommentVote (
+       vote_id INTEGER NOT NULL PRIMARY KEY,
+       user_id INTEGER NOT NULL,
+       comment_id INTEGER NOT NULL,
+       is_upvote BOOLEAN,
+       UNIQUE(user_id, comment_id),
+       FOREIGN KEY(comment_id) REFERENCES PostComment(comment_id),
        FOREIGN KEY(user_id) REFERENCES NaniUser(user_id)
      )"}])
 
