@@ -44,6 +44,14 @@
      discussion_id integer not null
    }
 
+   User "1" *-- "1" PostVote
+   Post "1" *-- "*" PostVote
+   class PostVote << (T,brown) Table >> {
+     vote_id integer not null primary key
+     user_id integer not null
+     is_upvote boolean
+   }
+
    User "1" *-- "*" PostComment
    Post "1" *-- "*" PostComment
    class PostComment << (T,brown) Table >>  {
@@ -52,6 +60,14 @@
      comment_text TEXT NOT NULL
      user_id INTEGER NOT NULL
      post_id INTEGER NOT NULL
+   }
+
+   User "1" *-- "1" CommentVote
+   PostComment "1" *-- "*" CommentVote
+   class CommentVote << (T,brown) Table >> {
+     vote_id integer not null primary key
+     user_id integer not null
+     is_upvote boolean
    }
 
    #+END_SRC
