@@ -43,3 +43,8 @@
 
 (defn print-config []
   (pprint config))
+
+
+(defn -main [& args]
+  (println "Initializing Dev Server...")
+  (start))

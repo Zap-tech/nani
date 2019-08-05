@@ -59,7 +59,7 @@
 
   :profiles 
   {:dev 
-   {:main nani.dev.server
+   {:main nani.dev.user
     :source-paths ["src" "dev"]
     :dependencies []
     :plugins [[lein-cljsbuild "1.1.7"]

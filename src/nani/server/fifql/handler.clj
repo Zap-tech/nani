@@ -13,4 +13,10 @@
 
 (def fifql-handler
    (create-ring-request-handler
-    :prepare-stack-machine guest-stack-machine))
+    :prepare-stack-machine
+    (fn [request]
+      guest-stack-machine)
+
+    :post-response
+    (fn [sm request response]
+      response)))
