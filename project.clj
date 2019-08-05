@@ -4,19 +4,20 @@
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
             :url "https://www.eclipse.org/legal/epl-2.0/"}
 
-  :dependencies [[org.clojure/clojure "1.10.0"]
+  :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/clojurescript "1.10.520" :scope "provided"]
-                 [org.clojure/core.async "0.4.490"]
+                 [org.clojure/core.async "0.4.500"]
 
-                 [bidi "2.1.5"]                      ;; Routing Library (cljs)
+                 [bidi "2.1.6"]                      ;; Routing Library (cljs)
+                 [buddy "2.0.0"]                     ;; Security Library (clj)
                  [compojure "1.6.1"]                 ;; Routing Library (clj)
-                 [com.taoensso/encore "2.109.0"]     ;; Utility Library (clj/cljs)
+                 [com.taoensso/encore "2.115.0"]     ;; Utility Library (clj/cljs)
                  [environ "1.1.0"]                   ;; Configuration
                  [hiccup "1.0.5"]                    ;; HTML Generation
                  [http-kit "2.3.0"]                  ;; HTTP Server
                  [me.raynes/fs "1.4.6"]              ;; Filesystem Utilities
                  [mount "0.1.16"]                    ;; Dependency Management Library
-                 [re-frame "0.10.6"]                 ;; CLJS React State Management for Reagent
+                 [re-frame "0.10.8"]                 ;; CLJS React State Management for Reagent
                  [reagent "0.8.1"]                   ;; React Wrapper Library
                  [ring/ring-defaults "0.3.2"]        ;; Useful Http Middleware Defaults
                  [com.taoensso/timbre "4.10.0"]      ;; Logging Library
@@ -29,7 +30,7 @@
 
                  ;; Database
                  [org.clojure/java.jdbc "0.7.9"]     ;; Database Handler
-                 [org.xerial/sqlite-jdbc "3.23.1"]   ;; Sqlite
+                 [org.xerial/sqlite-jdbc "3.28.0"]   ;; Sqlite
                  [honeysql "0.9.4"]]                 ;; SQL Abstraction Library
 
   :source-paths ["src"]

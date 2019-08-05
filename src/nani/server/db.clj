@@ -26,14 +26,16 @@
        user_name TEXT NOT NULL UNIQUE,
        full_name TEXT,
        password_hash TEXT NOT NULL,
-       email TEXT NOT NULL UNIQUE
+       email TEXT NOT NULL UNIQUE,
+       date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
      )"}
 
    {:name "Discussion"
     :creation-query
     "CREATE TABLE Discussion (
        discussion_id INTEGER NOT NULL PRIMARY KEY,
-       name TEXT NOT NULL
+       name TEXT NOT NULL,
+       date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
      )"}
 
    {:name "DiscussionUserPrivilege"
@@ -56,6 +58,8 @@
        post_text TEXT,
        post_type TEXT CHECK( post_type IN ('text', 'link') ) NOT NULL DEFAULT 'text',
        discussion_id INTEGER NOT NULL,
+       date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       date_edited TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
        FOREIGN KEY(discussion_id) REFERENCES Discussion(discussion_id)
      )"}
    
@@ -79,6 +83,8 @@
        comment_text TEXT NOT NULL,
        user_id INTEGER NOT NULL,
        post_id INTEGER NOT NULL,
+       date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       date_edited TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
        FOREIGN KEY(post_id) REFERENCES Post(post_id),
        FOREIGN KEY(user_id) REFERENCES NaniUser(user_id)
      )"}
