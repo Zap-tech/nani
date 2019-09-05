@@ -25,3 +25,23 @@
 ;;(new-discussion! {:user-name "john_doh2" :discussion-name "All"})
 
   
+(defn get-user-privilege
+  [user-name discussion-name]
+  (let [q "SELECT * FROM DiscussionUserPrivilege
+           WHERE
+           discussion_id = (
+             SELECT discussion_id FROM Discussion WHERE name = ?
+           )
+           AND
+           user_id = (
+             SELECT user_id FROM NaniUser WHERE user_name = ?
+           )"
+        result (db/query [q discussion-name user-name])]
+    (first result)))
+
+
+;;(get-user-privilege "john_doh2" "All")
+
+
+(defn set-user-privilege!
+  [{:keys [:user/user-name]}])
