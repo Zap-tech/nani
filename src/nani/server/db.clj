@@ -34,7 +34,7 @@
     :creation-query
     "CREATE TABLE Discussion (
        discussion_id INTEGER NOT NULL PRIMARY KEY,
-       name TEXT NOT NULL,
+       name TEXT UNIQUE NOT NULL,
        date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
      )"}
 
