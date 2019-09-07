@@ -4,10 +4,12 @@
  ;; Location of the HTTP Server, along with the port to serve it on
  :http-server {:url "127.0.0.1" :port 8080}
 
- ;; The SQLite database location in the filesystem, along with the
- ;; location of the .sql schema file for intial database generation
+ ;; The Crux Graph Database Configuration
+ ;; Development uses standalone crux with sqlite. See https://juxt.pro/crux/docs/configuration.html
  :database
- {:location "resources/nani.db" ;; ":memory:" for in-memory database
+ {:crux-config {:dbtype "sqlite"
+                :dbname "resources/db/nani_crux.db"
+                :db-dir "resources/db/nani_crux_data"}
   :migrations []} ;; List of script locations of migrations which are applied in order
 
  ;; Setting dev-mode? to true will enable fifiql, and other helpful

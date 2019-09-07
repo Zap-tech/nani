@@ -1,28 +1,73 @@
 (ns nani.server.model.user
+  (:refer-clojure :exclude [get])
   (:require
    [clojure.java.jdbc :as jdbc]
    [taoensso.timbre :as log]
+   [crux.api :as crux]
+   [nani.spec]
 
-   [nani.server.db :as db]
+   [nani.server.util.uuid :refer [random-uuid]]
+   [nani.server.db :refer [db]]
    [nani.server.config :refer [config]]
    [nani.server.auth.core :as auth]))
 
 
-(defn new-user!
-  [{:keys [user-name full-name password email]}]
-  (let [password-hash (auth/encrypt password)
-        q "INSERT INTO NaniUser (user_name, full_name, password_hash, email)
-           VALUES (?, ?, ?, ?)"]
-    (db/execute! [q user-name full-name password-hash email])))
+(defn id [username]
+  (some-> 
+   (crux/q (crux/db db)
+           {:find ['?id]
+            :where [['?id :user/username username]]})
+   first first))
 
 
-(defn user-by-username [user-name]
-  (-> (db/query {:select [:*]
-                 :from [:NaniUser]
-                 :where [:= :user_name user-name]})
-      first))
+(defn new!
+  [{:keys [:user/username :user/fullname :user/password :user/email]}]
+  (if-not (id username)
+    (let [password-hash (auth/encrypt password)]
+      (crux/submit-tx
+       db
+       [[:crux.tx/put
+         {:crux.db/id (random-uuid)
+          :user/username username
+          :user/fullname fullname
+          :user/password-hash password-hash
+          :user/email email}]]))
+    (throw (ex-info "Given user with the provided username already exists" {:user/username username}))))
 
 
-;;(new-user! {:user-name "john_doh2" :full-name "john. doh2" :password "test" :email "test2@gmail.com"})
-;;(auth/check "test" (-> (user-by-username "john_doh2") :password_hash))
+(defn update!
+  [user-document]
+  (let [{user-id :crux.db/id username :user/username} user-document]
+    (cond 
+      (not (id username))
+      (throw (ex-info "Unable to update non-existant user" {:user/username username}))
+      
+      (not= user-id (id username))
+      (throw (ex-info "Given user document is invalid" {:store-hash (id username) :invalid-hash user-id}))
 
+      :else
+      (crux/submit-tx db [[:crux.tx/put user-document]]))))
+
+
+(defn get [username]
+  (when-let [id (id username)]
+    (crux/entity (crux/db db) id)))
+
+
+(comment
+  (new! {:user/username "john_doh2"
+         :user/fullname "john. doh2"
+         :user/password "test"
+         :user/email "test2@gmail.com"})
+  (id "john_doh2")
+  (id "john_doh1")
+  (get "john_doh2")
+  (get "john_doh")
+  
+  (-> (get "john_doh2")
+      (assoc :user/email "john.doe.2@gmail.com")
+      update!)
+
+  (get "john_doh2")
+
+  (auth/check "test" (-> (user-by-username "john_doh2") :password_hash)))

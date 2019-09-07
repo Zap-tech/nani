@@ -19,4 +19,5 @@ package.json
 package-lock.json
 .rebel_readline_history
 resources/nani.db
+resources/db/
 .DS_Store

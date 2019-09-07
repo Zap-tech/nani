@@ -12,7 +12,9 @@
   {:environment-name "Default Environment"
    :http-server {:url "127.0.0.1" :port 8080}
    :database
-   {:location "resources/nani.db" ;; :memory: for in-memory database
+   {:crux-config {:dbtype "sqlite"
+                  :dbname "resources/db/nani_crux.db"
+                  :db-dir "resources/db/nani_crux_data"}
     :secret "nani"
     :migrations []}
    :dev-mode? false

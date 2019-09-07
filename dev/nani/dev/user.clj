@@ -2,6 +2,7 @@
   (:require
    [clojure.pprint :refer [pprint]]
    [mount.core :as mount :refer [defstate]]
+   [crux.api :as crux]
 
    ;; Mount Components
    [nani.server.http :refer [http]]

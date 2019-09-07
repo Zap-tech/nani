@@ -1,6 +1,8 @@
 {:environment-name "Testing"
  :http-server {:url "127.0.0.1" :port 8080}
  :database
- {:location ":memory:"}
+ {:crux-config {:dbtype "sqlite"
+                :dbname ":memory:"
+                :db-dir "resources/db/nani_crux_test"}
  :dev-mode? true
  :logging {:min-level nil}}

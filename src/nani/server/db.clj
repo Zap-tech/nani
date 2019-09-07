@@ -6,10 +6,12 @@
    [me.raynes.fs :as fs]
    [mount.core :as mount :refer [defstate]]
    [taoensso.timbre :as log]
+   [crux.api :as crux]
 
    ;; Mount Components
    [nani.server.logging]
-   [nani.server.config :refer [config]]))
+   [nani.server.config :refer [config]])
+  (:import (crux.api ICruxAPI)))
 
 
 (declare start stop)
@@ -102,99 +104,46 @@
      )"}])
 
 
-(defn list-tables
-  "Lists all of the tables currently in the sqlite3 database."
-  [db]
-  (let [q "SELECT name FROM sqlite_master WHERE type = 'table'"
-        results (jdbc/query db q)]
-    (if (empty? results)
-      #{}
-      (->> results (map :name) set))))
-
-
-;; (list-tables db)
-
-
-(defn has-table? [db name]
-  (contains? (list-tables db) name))
-
-
-;; (has-table? "NaniUser")
-
-
-(defn create-tables! [db]
-  (log/info "Creating Database Tables...")
-  (doseq [{:keys [name creation-query]} schema]
-    (if-not (has-table? db name)
-      (do
-        (log/info "- Creating Table " name "...")
-        (jdbc/execute! db creation-query))
-      (log/info "- Table " name " already exists, skipping..."))))
-
-
-(defn drop-tables! [db]
-  (doseq [{:keys [name creation-query]} (reverse schema)]
-    (when (has-table? db name)
-      (log/info "- Dropping Table " name "...")
-      (jdbc/execute! db (str "DROP TABLE " name)))))
-
-
-(defn delete-database! []
-  (if-let [dbpath (-> config :database :location)]
-    (when (fs/file? dbpath)
-      (log/info "Deleting database: " dbpath "...")
-      (fs/delete dbpath))
-    (log/info "Attempted to delete database, but it does not exist.")))
-
-
 (defn start []
-  (let [db {:classname "org.sqlite.JDBC"
-            :subprotocol "sqlite"
-            :subname (-> config :database :location)}]
-    (let [conn (jdbc/get-connection db)
-          db (assoc db :connection conn)]
-      (log/info "Starting Database... " db)
-      (create-tables! db)
-      db)))
+  (let [crux-config (-> config :database :crux-config)]
+    (log/info "Starting Crux JDBC Database Node... " db)
+    (crux/start-jdbc-node crux-config)))
 
 
 (defn stop []
-  (let [dev-mode? (-> config :dev-mode?)]
-    (when dev-mode?
-      (log/debug "In dev-mode, dropping tables...")
-      (drop-tables! db))
-    (when-let [conn (:connection db)]
-      (.close conn))))
+  (.close db))
 
 
-;;
-;; Functions used with the mounted database
-;;
+(comment
 
+  (def ^crux.api.ICruxAPI node
+    (crux/start-jdbc-node {:dbtype "sqlite"
+                           :dbname "nani-crux.db"
+                           :db-dir "resources/db/nani-crux"}))
 
-(defn query [q]
-  (if (map? q)
-    (jdbc/query db (sql/format q))
-    (jdbc/query db q)))
+  (crux/submit-tx
+   node
+   [[:crux.tx/put
+     {:crux.db/id :test
+      :user/name "Test Username"
+      :user/email "benzap@tbaytel.net"}]])
 
+  (crux/submit-tx
+   node
+   [[:crux.tx/put
+     {:crux.db/id :test
+      :user/name "Test Username"
+      :user/email2 "benzap@tbaytel.net"}]])
 
-(defn execute! [q]
-  (if (map? q)
-    (jdbc/execute! db (sql/format q))
-    (jdbc/execute! db q)))
+  (crux/q (crux/db node)
+          '{:find [?e]
+            :where [[?e :user/name "Test Username"]]})
 
+  (crux/entity (crux/db node) :test)
 
-(defn insert! [& args]
-  (apply jdbc/insert! db args))
-
-
-(defn insert-multi! [& args]
-  (apply jdbc/insert-multi! db args))
-
-
-(defn update! [& args]
-  (apply jdbc/update! db args))
-
-
-(defn delete! [& args]
-  (apply jdbc/delete! db args))
+  (crux/submit-tx
+   node
+   [[:crux.tx/put
+     {:crux.db/id :benzap
+      :user/username "benzap"
+      :user/email "benzap@tbaytel.net"}]]))
