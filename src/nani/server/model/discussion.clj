@@ -1,4 +1,4 @@
-(ns nani.server.model.post
+(ns nani.server.model.discussion
   (:refer-clojure :exclude [get])
   (:require
    [clojure.java.jdbc]
@@ -15,11 +15,21 @@
    [nani.server.model.user :as model.user]))
 
 
+
+(defn exists? [id]
+  (not-empty
+   (crux/q (crux/db db)
+           {:find ['?id]
+            :where [['?id :discussion/id id]
+                    ['?id :type :discussion]]})))
+
+
 (defn id [name]
   (some-> 
    (crux/q (crux/db db)
            {:find ['?id]
-            :where [['?id :discussion/name name]]})
+            :where [['?id :discussion/name name]
+                    ['?id :type :discussion]]})
    first first))
 
 
@@ -33,17 +43,20 @@
     (throw (ex-info "Given discussion already exists" {:discussion/name name}))
 
     :else
-    (crux/submit-tx
-     db
-     [[:crux.tx/put
-       {:crux.db/id (random-uuid)
-        :discussion/name name
-        :discussion/user-privileges {username :owner}}]])))
+    (let [discussion-id (random-uuid)]
+      (crux/submit-tx
+       db
+       [[:crux.tx/put
+         {:crux.db/id discussion-id
+          :discussion/id discussion-id
+          :type :discussion
+          :discussion/name name
+          :discussion/user-privileges {username :privilege/owner}}]]))))
 
-  
+
 (defn update!
   [discussion-document]
-  (let [{discussion-id :crux.db/id discussion-name :discussion/name}
+  (let [{discussion-id :discussion/id discussion-name :discussion/name}
         discussion-document]
     (cond
       (not (id discussion-name))
@@ -60,3 +73,10 @@
 (defn get [discussion-name]
   (when-let [id (id discussion-name)]
     (crux/entity (crux/db db) id)))
+
+
+(comment
+  (new! {:user/username "john_doh2" :discussion/name "all3"})
+  (exists? (id "all3"))
+  (crux/entity (crux/db db) (id "all3")))
+

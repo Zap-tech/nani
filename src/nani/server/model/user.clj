@@ -12,22 +12,34 @@
    [nani.server.auth.core :as auth]))
 
 
+(defn exists? [id]
+  (not-empty
+   (crux/q (crux/db db)
+           {:find ['?id]
+            :where [['?id :user/id id]
+                    ['?id :type :user]]})))
+
+
 (defn id [username]
   (some-> 
    (crux/q (crux/db db)
            {:find ['?id]
-            :where [['?id :user/username username]]})
+            :where [['?id :user/username username]
+                    ['?id :type :user]]})
    first first))
 
 
 (defn new!
   [{:keys [:user/username :user/fullname :user/password :user/email]}]
   (if-not (id username)
-    (let [password-hash (auth/encrypt password)]
+    (let [password-hash (auth/encrypt password)
+          user-id (random-uuid)]
       (crux/submit-tx
        db
        [[:crux.tx/put
-         {:crux.db/id (random-uuid)
+         {:crux.db/id user-id
+          :user/id user-id
+          :type :user
           :user/username username
           :user/fullname fullname
           :user/password-hash password-hash
