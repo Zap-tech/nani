@@ -22,11 +22,10 @@
   (create-ring-request-handler
    :prepare-stack-machine
    (fn [request]
-     (let [request-session (:session request)
-           user-id (:user/id request-session)
-           username (:user/username request-session)
-           stack-machine (if user-id guest-stack-machine user-stack-machine)]
-
+     (let [{user-id :user/id username :user/username} (:session request)
+           stack-machine (if user-id
+                           user-stack-machine
+                           guest-stack-machine)]
        (-> stack-machine
 
            (fifql/set-var

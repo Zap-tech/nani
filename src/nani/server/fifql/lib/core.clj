@@ -12,7 +12,8 @@
 (def group-name :nani.core)
 
 
-(defn login!
+(defn s-login!
+  "Stack operation to prepare stack machine for logging in."
   [sm]
   (let [[password username] (fif/get-stack sm)]
     (-> sm
@@ -24,21 +25,24 @@
         fif.stack/dequeue-code)))
 
 
-(defn logout!
+(defn s-logout!
+  "Stack operation to prepare stack machine for logging out."
   [sm]
   (-> sm
       (fifql/set-var 'logout? true)
       fif.stack/dequeue-code))
 
 
-(defn handle-login [sm request response]
+(defn handle-login
+  "Post Response Handler for logging in through fifql."
+  [sm request response]
   (let [login? (fifql/get-var sm 'login?)
         username (fifql/get-var sm 'username)
         password (fifql/get-var sm 'password)]
     (if (true? login?)
       (cond
-        (not (string? username)) (throw (ex-info "Username must be a string" {:username username}))
-        (not (string? password)) (throw (ex-info "Password must be a string" {}))
+        (not (string? username)) (throw (ex-info "server/login! - Username must be a string" {:username username}))
+        (not (string? password)) (throw (ex-info "server/login! - Password must be a string" {}))
         :else
         (-> response
             (assoc-in [:session :user/id] (model.user/id username))
@@ -46,28 +50,31 @@
       response)))
 
 
-(defn handle-logout [sm request response]
-   (let [logout? (fifql/get-var sm 'logout?)]
-     (if (true? logout?)
-       (-> response
-           (assoc-in [:session :user/id] nil)
-           (assoc-in [:session :user/username] nil))
-       response)))
+(defn handle-logout
+  "Post Response Handler for logging out through fifql."
+  [sm request response]
+  (let [logout? (fifql/get-var sm 'logout?)]
+    (if (true? logout?)
+      (-> response
+          (assoc-in [:session :user/id] nil)
+          (assoc-in [:session :user/username] nil))
+      response)))
 
 
 (defn import-nani-core-libs [sm]
   (-> sm
-   
-      (fifql/set-var 
+
+      (fifql/set-var
        'server/name server-name
        :doc "Contains the name of the server"
        :group group-name)
 
-      (fifql/set-word 'server/login! login!
-       :doc "( username password -- ) Login to your current user session"
+      (fifql/set-word 'server/login! s-login!
+       :doc "( username password -- ) Login to your current user
+       session."
        :group group-name)
 
-      (fifql/set-word 'server/logout! logout!
-       :doc "( -- ) Logout of the current user session"
+      (fifql/set-word 'server/logout! s-logout!
+       :doc "( -- ) Logout of the current user session."
        :group group-name)))
-       
+
