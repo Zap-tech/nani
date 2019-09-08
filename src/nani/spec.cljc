@@ -85,49 +85,49 @@
 
 
 (s/def :user/model
-  (s/keys {:req [:crux.db/id
-                 :model/type
-                 :user/id
-                 :user/username
-                 :user/fullname
-                 :user/password-hash
-                 :user/email]}))
+  (s/keys :req [:crux.db/id
+                :model/type
+                :user/id
+                :user/username
+                :user/fullname
+                :user/password-hash
+                :user/email]))
 
 
 (s/def :discussion/model
-  (s/keys {:req [:crux.db/id
-                 :model/type
-                 :discussion/id
-                 :discussion/name
-                 :discussion/user-privileges]}))
+  (s/keys :req [:crux.db/id
+                :model/type
+                :discussion/id
+                :discussion/name
+                :discussion/user-privileges]))
 
 
 (s/def :post/model
-  (s/keys {:req [:crux.db/id
-                 :model/type
-                 :post/id
-                 :discussion/id
-                 :user/id
-                 :post/title
-                 :post/text
-                 :post/type
-                 :post/votes]}))
+  (s/keys :req [:crux.db/id
+                :model/type
+                :post/id
+                :discussion/id
+                :user/id
+                :post/title
+                :post/text
+                :post/type
+                :post/votes]))
 
 
 (s/def :comment/model
-  (s/keys {:req [:crux.db/id
-                 :model/type
-                 :comment/id
-                 :comment/text
-                 :comment/reference
-                 :comment/type
-                 :comment/votes]}))
+  (s/keys :req [:crux.db/id
+                :model/type
+                :comment/id
+                :comment/text
+                :comment/reference
+                :comment/type
+                :comment/votes]))
 
 
 (s/def :vote/model
-  (s/keys {:req [:crux.db/id
-                 :model/type
-                 :vote/id
-                 :vote/value
-                 :vote/type
-                 :vote/reference]}))
+  (s/keys :req [:crux.db/id
+                :model/type
+                :vote/id
+                :vote/value
+                :vote/type
+                :vote/reference]))

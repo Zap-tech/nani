@@ -30,26 +30,28 @@
 
 
 (defn new!
-  [{:keys [:user/username] :as user-document}]
+  [{:keys [:user/username :user/password] :as user-document}]
   (cond
-    (not (id username))
+    (id username)
     (throw (ex-info "Given user with the provided username already exists" {:user/username username}))
     
     :else
     (let [password-hash (auth/encrypt password)
           user-id (random-uuid)
+          user-document (dissoc user-document :user/password)
           user-model
           (merge
            user-document
            {:crux.db/id user-id
             :user/id user-id
-            :model/type :user})]
+            :model/type :user
+            :user/password-hash password-hash})]
       (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :user/model user-model)]]))))
 
 
 (defn update!
-  [user-document]
-  (let [{user-id :crux.db/id username :user/username} user-document]
+  [user-model]
+  (let [{user-id :crux.db/id username :user/username} user-model]
     (cond 
       (not (id username))
       (throw (ex-info "Unable to update non-existant user" {:user/username username}))
@@ -58,7 +60,7 @@
       (throw (ex-info "Given user document is invalid" {:store-hash (id username) :invalid-hash user-id}))
 
       :else
-      (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :user/model user-document)]]))))
+      (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :user/model user-model)]]))))
 
 
 (defn get [username]
@@ -67,8 +69,8 @@
 
 
 (comment
-  (new! {:user/username "john_doh2"
-         :user/fullname "john. doh2"
+  (new! {:user/username "johndoe3"
+         :user/fullname "John Doe"
          :user/password "test"
          :user/email "test2@gmail.com"})
   (id "john_doh2")
