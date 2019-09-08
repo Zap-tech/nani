@@ -3,9 +3,35 @@
    [clojure.spec.alpha :as s]
    [cuerdas.core :as str]))
 
+;;
+;; Helper Functions
+;;
+
+(defn strict-conform
+  "Checks the given `value` against the given `spec` for
+  conformity. Will throw an Exception containing additional
+  information on spec conformity.
+
+  # Example
+
+  ```clojure
+  (try 
+   (strict-conform str? 2)
+   (catch Exception ex
+    (let [msg (-> (ex-data ex) :message)]
+      (println \"Failed, Reason: \" msg))))
+  ```"
+  [spec value]
+  (if (s/valid? spec value)
+    value
+    (throw (ex-info
+            (str "Failed Strict Spec Conform: " (s/explain-str spec value))
+            {:type ::spec-strict-conform
+             :message (s/explain-str spec value)}))))
+
 
 ;;
-;; Fundamental
+;; Fundamental Specs
 ;;
 
 

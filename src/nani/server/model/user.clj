@@ -1,7 +1,7 @@
 (ns nani.server.model.user
   (:refer-clojure :exclude [get])
   (:require
-   [clojure.java.jdbc :as jdbc]
+   [clojure.spec.alpha :as s]
    [taoensso.timbre :as log]
    [crux.api :as crux]
    [nani.spec]
@@ -30,21 +30,21 @@
 
 
 (defn new!
-  [{:keys [:user/username :user/fullname :user/password :user/email]}]
-  (if-not (id username)
+  [{:keys [:user/username] :as user-document}]
+  (cond
+    (not (id username))
+    (throw (ex-info "Given user with the provided username already exists" {:user/username username}))
+    
+    :else
     (let [password-hash (auth/encrypt password)
-          user-id (random-uuid)]
-      (crux/submit-tx
-       db
-       [[:crux.tx/put
-         {:crux.db/id user-id
-          :user/id user-id
-          :model/type :user
-          :user/username username
-          :user/fullname fullname
-          :user/password-hash password-hash
-          :user/email email}]]))
-    (throw (ex-info "Given user with the provided username already exists" {:user/username username}))))
+          user-id (random-uuid)
+          user-model
+          (merge
+           user-document
+           {:crux.db/id user-id
+            :user/id user-id
+            :model/type :user})]
+      (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :user/model user-model)]]))))
 
 
 (defn update!
@@ -58,7 +58,7 @@
       (throw (ex-info "Given user document is invalid" {:store-hash (id username) :invalid-hash user-id}))
 
       :else
-      (crux/submit-tx db [[:crux.tx/put user-document]]))))
+      (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :user/model user-document)]]))))
 
 
 (defn get [username]

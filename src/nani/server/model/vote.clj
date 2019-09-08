@@ -28,11 +28,7 @@
 
 (defn new!
   [vote-document]
-  (let [{user-id :user/id
-         vote-type :vote/type
-         vote-value :vote/value
-         vote-reference :vote/reference}
-        vote-document]
+  (let [{user-id :user/id} vote-document]
     (cond
       (not (model.user/exists? user-id))
       (throw (ex-info "Cannot create post vote, given user does not exist" {:user/id user-id}))
@@ -40,27 +36,25 @@
       ;; TODO make sure vote reference exists based on vote type
 
       :else
-      (let [vote-id (random-uuid)]
-        (crux/submit-tx
-         db
-         [[:crux.tx/put
-           {:crux.db/id vote-id
-            :vote/id vote-id
-            :vote/type vote-type
-            :vote/value vote-value
-            :model/type :vote
-            :user/id user-id}]])))))
+      (let [vote-id (random-uuid)
+            vote-model
+            (merge
+             vote-document
+             {:crux.db/id vote-id
+              :vote/id vote-id
+              :model/type :vote})]
+        (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :vote/model vote-model)]])))))
 
 
 (defn update!
-  [vote-document]
-  (let [{vote-id :vote/id user-id :user/id} vote-document]
+  [vote-model]
+  (let [{vote-id :vote/id user-id :user/id} vote-model]
     (cond
       (not (exists? vote-id user-id))
       (throw (ex-info "Unable to update non-existant vote" {:vote/id vote-id}))
 
       :else
-      (crux/submit-tx db [[:crux.tx/put vote-document]]))))
+      (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :vote/model vote-model)]]))))
 
 
 (defn get [vote-id]

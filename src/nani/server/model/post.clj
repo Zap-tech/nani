@@ -26,12 +26,7 @@
 
 (defn new!
   [post-document]
-  (let [{user-id :user/id
-         discussion-id :discussion/id
-         post-title :post/title
-         post-text :post/text
-         post-type :post/type}
-        post-document]
+  (let [{user-id :user/id discussion-id :discussion/id} post-document]
     (cond
       (not (model.user/exists? user-id))
       (throw (ex-info "Cannot create post, given user does not exist" {:user/id user-id}))
@@ -40,29 +35,25 @@
       (throw (ex-info "Cannot create post, given discussion does not exist" {:discussion/id discussion-id}))
 
       :else
-      (let [post-id (random-uuid)]
-        (crux/submit-tx
-         db
-         [[:crux.tx/put
-           {:crux.db/id post-id
-            :post/id post-id
-            :model/type :post
-            :user/id user-id
-            :discussion/id discussion-id
-            :post/title post-title
-            :post/text post-text
-            :post/type post-type}]])))))
+      (let [post-id (random-uuid)
+            post-model
+            (merge
+             post-document
+             {:crux.db/id post-id
+              :post/id post-id
+              :model/type :post})]
+        (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :post/model post-model)]])))))
 
 
 (defn update!
-  [post-document]
-  (let [{post-id :post/id} post-document]
+  [post-model]
+  (let [{post-id :post/id} post-model]
     (cond
       (not (exists? post-id))
       (throw (ex-info "Unable to update non-existant post" {:post/id post-id}))
 
       :else
-      (crux/submit-tx db [[:crux.tx/put post-document]]))))
+      (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :post/model post-model)]]))))
 
 
 (defn get [post-id]

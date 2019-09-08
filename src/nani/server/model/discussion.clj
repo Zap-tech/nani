@@ -34,7 +34,7 @@
 
 
 (defn new!
-  [{:keys [:user/username :discussion/name] :as discussion-document}]
+  [{:keys [:user/username :discussion/user-privileges] :as discussion-document}]
   (cond
     (not (model.user/id username))
     (throw (ex-info "Cannot create discussion, given user does not exist" {:user/username username}))
@@ -43,15 +43,18 @@
     (throw (ex-info "Given discussion already exists" {:discussion/name name}))
 
     :else
-    (let [discussion-id (random-uuid)]
-      (crux/submit-tx
-       db
-       [[:crux.tx/put
-         {:crux.db/id discussion-id
-          :discussion/id discussion-id
-          :model/type :discussion
-          :discussion/name name
-          :discussion/user-privileges {username :privilege/owner}}]]))))
+    (let [discussion-id (random-uuid)
+          discussion-model
+          (merge
+           discussion-document
+           {:crux.db/id discussion-id
+            :discussion/id discussion-id
+            :model/type :discussion
+            :discussion/user-privileges
+            (merge
+             (or user-privileges {})
+             {username :privilege/owner})})]
+      (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :discussion/model discussion-model)]]))))
 
 
 (defn update!
@@ -67,7 +70,7 @@
                       {:store-hash (id discussion-name) :invalid-hash discussion-id}))
 
       :else
-      (crux/submit-tx db [[:crux.tx/put discussion-document]]))))
+      (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :discussion/model discussion-document)]]))))
 
 
 (defn get [discussion-name]

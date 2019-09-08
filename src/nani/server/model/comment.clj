@@ -27,44 +27,32 @@
 
 (defn new!
   [comment-document]
-  (let [{user-id :user/id
-         comment-text :comment/text
-         comment-parent :comment/parent
-         comment-children :comment/children}
-        comment-document]
+  (let [{user-id :user/id} comment-document]
     (cond
       (not (model.user/exists? user-id))
       (throw (ex-info "Cannot create post comment, given user does not exist" {:user/id user-id}))
 
-      (not (model.discussion/exists? discussion-id))
-      (throw (ex-info "Cannot create post comment, given discussion does not exist" {:discussion/id discussion-id}))
-
-      (not (model.post/exists? post-id))
-      (throw (ex-info "Cannot create post comment, given post does not exist" {:post/id post-id}))
-
       :else
-      (let [comment-id (random-uuid)]
-        (crux/submit-tx
-         db
-         [[:crux.tx/put
-           {:crux.db/id comment-id
-            :comment/id comment-id
-            :post/id post-id
-            :model/type :comment
-            :user/id user-id
-            :discussion/id discussion-id
-            :comment/text comment-text}]])))))
+      (let [comment-id (random-uuid)
+            comment-model
+            (merge
+             comment-document
+             {:crux.db/id comment-id
+              :comment/id comment-id
+              :model/type :comment})]
+
+        (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :comment/model comment-model)]])))))
 
 
 (defn update!
-  [comment-document]
-  (let [{comment-id :comment/id} comment-document]
+  [comment-model]
+  (let [{comment-id :comment/id} comment-model]
     (cond
       (not (exists? comment-id))
       (throw (ex-info "Unable to update non-existant comment" {:comment/id comment-id}))
 
       :else
-      (crux/submit-tx db [[:crux.tx/put comment-document]]))))
+      (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :comment/model comment-model)]]))))
 
 
 (defn get [comment-id]
