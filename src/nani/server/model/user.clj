@@ -17,7 +17,7 @@
    (crux/q (crux/db db)
            {:find ['?id]
             :where [['?id :user/id id]
-                    ['?id :type :user]]})))
+                    ['?id :model/type :user]]})))
 
 
 (defn id [username]
@@ -25,7 +25,7 @@
    (crux/q (crux/db db)
            {:find ['?id]
             :where [['?id :user/username username]
-                    ['?id :type :user]]})
+                    ['?id :model/type :user]]})
    first first))
 
 
@@ -39,7 +39,7 @@
        [[:crux.tx/put
          {:crux.db/id user-id
           :user/id user-id
-          :type :user
+          :model/type :user
           :user/username username
           :user/fullname fullname
           :user/password-hash password-hash

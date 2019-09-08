@@ -21,7 +21,7 @@
    (crux/q (crux/db db)
            {:find ['?id]
             :where [['?id :discussion/id id]
-                    ['?id :type :discussion]]})))
+                    ['?id :model/type :discussion]]})))
 
 
 (defn id [name]
@@ -29,7 +29,7 @@
    (crux/q (crux/db db)
            {:find ['?id]
             :where [['?id :discussion/name name]
-                    ['?id :type :discussion]]})
+                    ['?id :model/type :discussion]]})
    first first))
 
 
@@ -49,7 +49,7 @@
        [[:crux.tx/put
          {:crux.db/id discussion-id
           :discussion/id discussion-id
-          :type :discussion
+          :model/type :discussion
           :discussion/name name
           :discussion/user-privileges {username :privilege/owner}}]]))))
 

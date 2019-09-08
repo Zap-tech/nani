@@ -21,14 +21,16 @@
    (crux/q (crux/db db)
            {:find ['?id]
             :where [['?id :post/id id]
-                    ['?id :type :post]]})))
+                    ['?id :model/type :post]]})))
 
 
 (defn new!
   [post-document]
   (let [{user-id :user/id
          discussion-id :discussion/id
-         post-title :post/title}
+         post-title :post/title
+         post-text :post/text
+         post-type :post/type}
         post-document]
     (cond
       (not (model.user/exists? user-id))
@@ -44,7 +46,24 @@
          [[:crux.tx/put
            {:crux.db/id post-id
             :post/id post-id
-            :type :post
+            :model/type :post
             :user/id user-id
             :discussion/id discussion-id
-            :post/title post-title}]])))))
+            :post/title post-title
+            :post/text post-text
+            :post/type post-type}]])))))
+
+
+(defn update!
+  [post-document]
+  (let [{post-id :post/id} post-document]
+    (cond
+      (not (exists? post-id))
+      (throw (ex-info "Unable to update non-existant post" {:post/id post-id}))
+
+      :else
+      (crux/submit-tx db [[:crux.tx/put post-document]]))))
+
+
+(defn get [post-id]
+  (crux/entity (crux/db db) post-id))
