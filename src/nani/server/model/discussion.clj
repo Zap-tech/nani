@@ -3,6 +3,7 @@
   (:require
    [clojure.java.jdbc]
    [taoensso.timbre :as log]
+   [taoensso.encore :refer [merge-deep]]
    [cuerdas.core :as str]
    [crux.api :as crux]
 
@@ -34,7 +35,7 @@
 
 
 (defn new!
-  [{:keys [:user/username :discussion/user-privileges] :as discussion-document}]
+  [{:keys [:user/username] :as discussion-document}]
   (cond
     (not (model.user/id username))
     (throw (ex-info "Cannot create discussion, given user does not exist" {:user/username username}))
@@ -44,16 +45,15 @@
 
     :else
     (let [discussion-id (random-uuid)
+          discussion-document (dissoc discussion-document :user/username)
           discussion-model
-          (merge
+          (merge-deep
            discussion-document
            {:crux.db/id discussion-id
             :discussion/id discussion-id
             :model/type :discussion
             :discussion/user-privileges
-            (merge
-             (or user-privileges {})
-             {username :privilege/owner})})]
+            {(model.user/id username) :privilege/owner}})]
       (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :discussion/model discussion-model)]]))))
 
 

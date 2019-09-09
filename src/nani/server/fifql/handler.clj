@@ -4,13 +4,19 @@
    [fifql.server :refer [create-ring-request-handler]]
 
    [nani.server.fifql.lib.core :as lib.core :refer [import-nani-core-libs]]
-   [nani.server.fifql.lib.user :as lib.user :refer [import-nani-user-libs]]))
+   [nani.server.fifql.lib.user :as lib.user :refer [import-nani-user-libs]]
+   [nani.server.fifql.lib.discussion :as lib.discussion :refer [import-nani-discussion-libs]]
+   [nani.server.fifql.lib.me :as lib.me :refer [import-nani-me-libs]]))
 
 
 (def guest-stack-machine
   (-> (fifql/create-stack-machine)
+
+      ;; Libraries
       import-nani-core-libs
       import-nani-user-libs
+      import-nani-discussion-libs
+
       (fifql/set-var 'server/session-type :guest
        :doc "( -- keyword ) Keyword representing the type of stack machine the session is using."
        :group :nani.core)))
@@ -18,8 +24,13 @@
 
 (def user-stack-machine
   (-> (fifql/create-stack-machine)
+
+      ;; Libraries
       import-nani-core-libs
       import-nani-user-libs
+      import-nani-discussion-libs
+      import-nani-me-libs
+
       (fifql/set-var 'server/session-type :user
        :doc "( -- keyword ) Keyword representing the type of stack machine the session is using."
        :group :nani.core)))

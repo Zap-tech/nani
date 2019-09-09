@@ -92,4 +92,8 @@ User model data in the form of a map structure for the given username
 
       (fifql/set-word 'user/get (fifql/wrap-function 1 #'get-user)
        :doc (str/trim doc-get-user "\n")
+       :group :nani.user)
+
+      (fifql/set-word 'user/get (fifql/wrap-function 1 #'get-user)
+       :doc (str/trim doc-get-user "\n")
        :group :nani.user)))
