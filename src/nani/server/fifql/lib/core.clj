@@ -70,8 +70,7 @@
        :group group-name)
 
       (fifql/set-word 'server/login! s-login!
-       :doc "( username password -- ) Login to your current user
-       session."
+       :doc "( username password -- ) Login to a user session."
        :group group-name)
 
       (fifql/set-word 'server/logout! s-logout!

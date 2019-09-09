@@ -89,9 +89,9 @@
                 :model/type
                 :user/id
                 :user/username
-                :user/fullname
                 :user/password-hash
-                :user/email]))
+                :user/email]
+          :opt [:user/fullname]))
 
 
 (s/def :discussion/model

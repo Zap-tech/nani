@@ -9,13 +9,20 @@
 
 (def guest-stack-machine
   (-> (fifql/create-stack-machine)
-      import-nani-core-libs))
+      import-nani-core-libs
+      import-nani-user-libs
+      (fifql/set-var 'server/session-type :guest
+       :doc "( -- keyword ) Keyword representing the type of stack machine the session is using."
+       :group :nani.core)))
 
 
 (def user-stack-machine
   (-> (fifql/create-stack-machine)
       import-nani-core-libs
-      import-nani-user-libs))
+      import-nani-user-libs
+      (fifql/set-var 'server/session-type :user
+       :doc "( -- keyword ) Keyword representing the type of stack machine the session is using."
+       :group :nani.core)))
 
 
 (def fifql-handler
@@ -29,14 +36,14 @@
        (-> stack-machine
 
            (fifql/set-var
-            'user/id user-id
+            'me/id user-id
             :doc "User ID for the given user session."
-            :group :nani.user)
+            :group :nani.me)
 
            (fifql/set-var
-            'user/username username
+            'me/username username
             :doc "Username for the given user session."
-            :group :nani.user)
+            :group :nani.me)
 
            (assoc :request/session (:session request)))))
 
