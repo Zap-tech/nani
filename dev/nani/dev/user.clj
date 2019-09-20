@@ -49,3 +49,11 @@
 (defn -main [& args]
   (println "Initializing Dev Server...")
   (start))
+
+
+(defn query-db [query-form]
+   (crux/q (crux/db db) query-form))
+
+
+(comment
+  (query-db '{:find [?id] :where [[?id :model/type :comment]]}))

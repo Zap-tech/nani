@@ -29,9 +29,7 @@
                  [fif-lang/fifql-fx "1.4.0"]         ;; Reagent Fifql Effect Handler
 
                  ;; Database
-                 [org.clojure/java.jdbc "0.7.9"]     ;; Database Handler
                  [org.xerial/sqlite-jdbc "3.28.0"]   ;; Sqlite
-                 [honeysql "0.9.4"]                 ;; SQL Abstraction Library
                  [juxt/crux-core "19.09-1.4.0-alpha"]
                  [juxt/crux-jdbc "19.09-1.4.0-alpha"]
                  [juxt/crux-rocksdb "19.09-1.4.0-alpha"]]

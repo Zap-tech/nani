@@ -1,7 +1,6 @@
 (ns nani.server.model.comment
   (:refer-clojure :exclude [get])
   (:require
-   [clojure.java.jdbc]
    [taoensso.timbre :as log]
    [cuerdas.core :as str]
    [crux.api :as crux]
