@@ -1,7 +1,6 @@
 (ns nani.server.model.discussion
   (:refer-clojure :exclude [get])
   (:require
-   [clojure.java.jdbc]
    [taoensso.timbre :as log]
    [taoensso.encore :refer [merge-deep]]
    [cuerdas.core :as str]
