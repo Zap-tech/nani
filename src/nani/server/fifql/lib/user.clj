@@ -16,8 +16,11 @@
 # Keyword Arguments
 
 opts - A map of options
+
   :limit - The number of users to include in the listing for pagination [default: 25]
+
   :offset - The offset of the listing for pagination [default: 0]
+
   :order-by - Method of sorting the user listing [default: :user/username]
 
 # Returns
@@ -47,9 +50,13 @@ options.
 # Keyword Arguments
 
 opts - A map of initial user configuration values
+
   :user/username - The prefered username to use
+
   :user/email - Email address linked to the given account
+
   :user/password - Alphanumeric password to be used with the given account
+
   :user/fullname - Full name of the user [optional]
 ")
 

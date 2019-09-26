@@ -44,6 +44,7 @@
 (s/def :user/email string?) ;; TODO: email verification
 (s/def :user/fullname string?)
 (s/def :user/password-hash string?)
+(s/def :user/verified? boolean?)
 
 
 ;; Discussion
@@ -91,7 +92,8 @@
                 :user/username
                 :user/password-hash
                 :user/email]
-          :opt [:user/fullname]))
+          :opt [:user/fullname
+                :user/verified?]))
 
 
 (s/def :discussion/model

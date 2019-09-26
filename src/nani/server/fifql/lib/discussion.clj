@@ -14,11 +14,16 @@
 (def ^:private doc-list-discussions "
 ( opts -- discussion-listing ) List discussions in a vector
 
+
 # Keyword Arguments
 
+
 opts -- A map of options
+
   :limit - The number of users to include in the listing for pagination [default: 25]
+
   :offset - The offset of the listing for pagination [default: 0]
+
   :order-by - Method of sorting the user listing [default: :discussion/name]
 ")
 

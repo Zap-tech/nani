@@ -1,0 +1,10 @@
+#+TITLE: Basic Batch - Using Fifiql
+#+AUTHOR: Benjamin Zaporzan
+#+DATE: 2019-09-23
+#+EMAIL: benzaporzan@gmail.com
+#+LANGUAGE: en
+#+OPTIONS: H:2 num:t toc:t \n:nil ::t |:t ^:t f:t tex:t
+
+This is an introductory post on using fifql, along with the fifiql
+development tool.
+
