@@ -8,7 +8,7 @@
                  [org.clojure/clojurescript "1.10.520" :scope "provided"]
                  [org.clojure/core.async "0.4.500"]
 
-                 [bidi "2.1.6"]                      ;; Routing Library (cljs)
+                 [funcool/bide "1.6.0"]              ;; Routing Library (cljs)
                  [buddy "2.0.0"]                     ;; Security Library (clj)
                  [compojure "1.6.1"]                 ;; Routing Library (clj)
                  [com.taoensso/encore "2.115.0"]     ;; Utility Library (clj/cljs)
@@ -63,10 +63,13 @@
   {:dev 
    {:main nani.dev.user
     :source-paths ["src" "dev"]
-    :dependencies []
+    :dependencies [[cider/piggieback "0.4.1"]
+                   [figwheel "0.5.19"]
+                   [figwheel-sidecar "0.5.19"]]
     :plugins [[lein-cljsbuild "1.1.7"]
               [lein-figwheel "0.5.18"]
               [lein-npm "0.6.2"]
               [lein-ancient "0.6.15"]]
     :repl-options {:init-ns nani.dev.user
+                   :nrepl-middleware [cider.piggieback/wrap-cljs-repl]
                    :port 9005}}})

@@ -5,7 +5,9 @@
    [re-frame.core :as re]
 
    [nani.ui.component.base-layout :refer [c-base-layout]]
-   [nani.ui.event :as ui.event]))
+   [nani.ui.event :as ui.event]
+   [nani.ui.router]
+   [nani.ui.pages]))
    
 
 
@@ -17,8 +19,12 @@
   {:environment-name "Production"})
 
 
+(defn c-app []
+  [c-base-layout {}])
+
+
 (defn ^:export render []
-  (r/render [c-base-layout] (.querySelector js/document "#app")))
+  (r/render c-app (.querySelector js/document "#app")))
 
 
 (defn ^:export start
