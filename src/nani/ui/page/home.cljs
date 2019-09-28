@@ -8,5 +8,5 @@
 (defmethod router/page :nani/home
   [_]
   (fn []
-   [:div.home-page
-    "home page"]))
+    [c-base-layout {:container-opts {:class :home-page-main-container}}
+     "home page"]))

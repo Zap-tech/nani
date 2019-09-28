@@ -5,9 +5,16 @@
 
 
 (defn c-base-layout
-  [{:keys [] :as opts} & children]
-  [:div.base-layout
-   [:div.header "header"]
-   [:div.main-margin
-    [:div.main-container
-     children]]])
+  [{:keys [container-opts] :as opts} & children]
+  (let [opts (dissoc opts :container-opts)]
+    [:div.base-layout opts
+     [:div.header "header"]
+     [:div.main-margin
+      [:div.main-container
+       container-opts
+       children]]
+     [:div.footer
+      [:div.copyright
+       [:span "Copyright © 2019 Nani Minimal Social Platform"]
+       [:div.spacer "|"]
+       [:span "All rights reserved."]]]]))
