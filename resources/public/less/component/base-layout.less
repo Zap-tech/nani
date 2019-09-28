@@ -1,6 +1,51 @@
 /// base-layout.less -- Styling for base-layout component
 
 
+#base-layout() {
+  header-height: 80px;
+  footer-height: 40px;
+}
+
+
 .base-layout {
-  
+  display: grid;
+  grid-template-areas:
+   'header'
+   'main-margin'
+   'footer';
+  grid-template-rows: #base-layout[header-height] 1fr #base-layout[footer-height];
+  min-height: 100%;
+
+  > .header {
+    grid-area: header;
+    background-color: @color-green;
+  }
+
+  > .main-margin {
+    grid-area: main-margin;
+    margin: 0 auto;
+
+    > .main-container {
+      
+    }
+  }
+
+  > .footer {
+    display: flex;
+    grid-area: footer;
+    flex-direction: row;
+    justify-content: center;
+
+    > .copyright {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      > span {
+        padding: 0 1em;
+        font-weight: 300;
+        font-size: 0.8em;
+      }
+    }
+  }
 }

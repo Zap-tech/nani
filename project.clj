@@ -38,7 +38,7 @@
   :uberjar-name "nani-server.jar"
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
   :repl-options {:init-ns nani.core}
-
+  :figwheel {:css-dirs ["resources/public/css"]}
   :cljsbuild {:builds
               [{:id "dev"
                 :source-paths ["src" "dev"]
