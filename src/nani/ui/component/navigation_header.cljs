@@ -10,7 +10,7 @@
     [:span "Nani"]]
    [:div.side
     [:span "You are logged in as "]
-    [:span.name "bacon1989"]
+    [:span.name "benzap"]
     [:div.sign-out
      [:span "("]
      [:div.button "sign out"]
