@@ -1,0 +1,35 @@
+/// navigation-header.less - Styling for the navigation header
+
+
+.navigation-header {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  background-color: @color-offwhite;
+  height: 100%;
+
+  > .logo {
+    padding: 0.3em;
+    font-size: 3em;
+    font-family: #font[sans-serif];
+    align-self: center;
+  }
+
+  > .side {
+    display: flex;
+    flex-direction: row;
+    font-size: 1.2em;
+    padding: 0.5em 1em;
+    align-self: flex-end;
+
+    > .name {
+      font-weight: bold;
+      padding: 0 0.5em;
+    }
+
+    > .sign-out {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+}
