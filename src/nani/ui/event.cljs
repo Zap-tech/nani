@@ -6,4 +6,12 @@
 
 (re/reg-event-fx
  ::init
- (fn [{:keys [db]}]))
+ (fn [{:keys [db]}]
+   {:db
+    {:nani/active-page :nani/home}}))
+
+
+(re/reg-event-fx
+ ::set-active-page
+ (fn [{:keys [db]} [_ page]]
+   {:db (assoc db :nani/active-page page)}))

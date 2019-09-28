@@ -6,6 +6,7 @@
 
    [nani.ui.component.base-layout :refer [c-base-layout]]
    [nani.ui.event :as ui.event]
+   [nani.ui.sub :as ui.sub]
    [nani.ui.router]
    [nani.ui.pages]))
    
@@ -20,7 +21,8 @@
 
 
 (defn c-app []
-  [c-base-layout {}])
+  (let [active-page (re/subscribe [:router/active-page])]
+    [nani.ui.router/page @active-page]))
 
 
 (defn ^:export render []
@@ -37,4 +39,5 @@
 
 (defn rerender []
   (log/info "Rerendering...")
-  (render))
+  (render)
+  (r/force-update-all))
