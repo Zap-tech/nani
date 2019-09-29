@@ -9,12 +9,13 @@
   [:div.post-element
    {:key (str "post-element-" id)}
    [:span.post-title "Post Title"]
-   [:span.post-num-comments "View Comments (99)"]])
+   [:span.post-submission "Submitted 2 Hours Ago by Bacon1989 to /d/general"]
+   [:span.post-actions "View Comments (99)"]])
 
 
 (defn c-post-listing
   [post-listing]
-  [:div.post-listing
+  [:div.post-listing {:key "post-listing"}
    (doall
     (for [post post-listing]
       ^{:key (str "post-" (:post/id post))}

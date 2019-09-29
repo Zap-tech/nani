@@ -1,5 +1,18 @@
 /// home.less -- Styling for the home page
 
 .home-main-container {
-  
+  #mixin.paper-1();
+  display: grid;
+  grid-template-areas: 'post-listing post-sidebar';
+  grid-template-columns: 3fr 1fr;
+  min-width: 100%;
+  min-height: 100%;
+
+  > .post-listing {
+    grid-area: post-listing;
+  }
+
+  > .post-sidebar {
+    grid-area: post-sidebar;
+  }
 }

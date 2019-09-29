@@ -2,15 +2,36 @@
 
 
 .post-listing {
-  
-  > .post-element {
-    
-    > .post-title {
+  min-height: 100%;
 
+  > .post-element {
+    display: grid;
+    grid-template-areas:
+      'post-title      post-domain'
+      'post-submission post-submission'
+      'post-actions    post-actions';
+
+    border: 1px solid @color-offwhite2;
+    padding: 0.2em;
+
+    > .post-title {
+      color: @color-off-black;
+      font-weight: 700;
+      padding: 0.3em 0;
+      font-size: 1.2em;
+      grid-area: post-title;
     }
 
-    > .post-num-comments {
+    > .post-submission {
+      grid-area: post-submission;
+      padding: 0.3em 0;
+      font-size: 0.8em;
+      font-weight: 300;
+    }
 
+    > .post-actions {
+      grid-area: post-actions;
+      padding: 0.3em 0;
     }
   }
 }
