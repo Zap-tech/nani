@@ -22,7 +22,9 @@
 # Keyword Arguments
 
 opts - A map of initial user configuration values
+
   :discussion/name - Name of the discussion board
+
   :discussion/user-privileges - Map of users with discussion board privileges
 ")
 
