@@ -3,6 +3,7 @@
    [fif.core :as fif]
    [fif.stack-machine :as fif.stack]
    [fifql.core :as fifql]
+   [fifql.server :refer [*context*]]
 
    [nani.server.model.user :as model.user]
    [nani.server.controller.authenticate :refer [is-authorized?]]))
@@ -12,53 +13,71 @@
 (def group-name :nani.core)
 
 
-(defn s-login!
+(defn login!
   "Stack operation to prepare stack machine for logging in."
-  [sm]
-  (let [[password username] (fif/get-stack sm)]
-    (-> sm
-        (fifql/set-var 'login? true)
-        (fifql/set-var 'username username)
-        (fifql/set-var 'password password)
-        fif.stack/pop-stack
-        fif.stack/pop-stack
-        fif.stack/dequeue-code)))
+  [username password]
+  (cond
+    (not (string? username))
+    (throw (ex-info "server/login! - Username must be a string" {:username username}))
+
+    (not (string? password))
+    (throw (ex-info "server/login! - Password must be a string" {}))
+
+    (not (is-authorized? username password))
+    (throw (ex-info "server/login! - Incorrect Username or Password" {:username username}))
+
+    :else
+    (do
+      (println (str "Successfully Logged in as '" username "'"))
+      (set! *context* (assoc *context*
+                             :user/id (model.user/id username)
+                             :user/username username
+                             ;; TODO: determine session type from username
+                             :user/session-type :user)))))
 
 
-(defn s-logout!
+(defn logout!
   "Stack operation to prepare stack machine for logging out."
-  [sm]
-  (-> sm
-      (fifql/set-var 'logout? true)
-      fif.stack/dequeue-code))
+  []
+  (let [{:keys [:user/id :user/username]} *context*]
+    (if id
+      (println (str "Successfully Logged out as '" username "'"))
+      (println "Already Logged out."))
+    (set! *context* nil)))
 
 
-(defn handle-login
-  "Post Response Handler for logging in through fifql."
+(defn handle-login-response
+  "Persists the session for multiple requests from the same user."
   [sm request response]
-  (let [login? (fifql/get-var sm 'login?)
-        username (fifql/get-var sm 'username)
-        password (fifql/get-var sm 'password)]
-    (if (true? login?)
-      (cond
-        (not (string? username)) (throw (ex-info "server/login! - Username must be a string" {:username username}))
-        (not (string? password)) (throw (ex-info "server/login! - Password must be a string" {}))
-        :else
-        (-> response
-            (assoc-in [:session :user/id] (model.user/id username))
-            (assoc-in [:session :user/username] username)))
-      response)))
-
-
-(defn handle-logout
-  "Post Response Handler for logging out through fifql."
-  [sm request response]
-  (let [logout? (fifql/get-var sm 'logout?)]
-    (if (true? logout?)
+  (let [{:keys [:user/id :user/username :user/session-type]} *context*]
+    (if id
       (-> response
-          (assoc-in [:session :user/id] nil)
-          (assoc-in [:session :user/username] nil))
+          (assoc-in [:session :user/id] id)
+          (assoc-in [:session :user/username] username)
+          (assoc-in [:session :user/session-type] session-type))
       response)))
+
+
+(defn handle-logout-response
+  "Persists logging out of the current user to the user's session."
+  [sm request response]
+  (let [{:keys [:user/id]} *context*]
+    (if id
+      response
+      (assoc response :session nil))))
+
+
+(def doc-session-type
+  "( -- keyword ) Keyword representing the type of stack machine the session is using.
+
+# Return Value
+
+Returns `:guest`, or `:user`")
+
+
+(defn session-type []
+  (let [session-type (-> *context* :user/session-type)]
+    (or session-type :guest)))
 
 
 (defn import-nani-core-libs [sm]
@@ -69,11 +88,15 @@
        :doc "Contains the name of the server"
        :group group-name)
 
-      (fifql/set-word 'server/login! s-login!
+      (fifql/set-word 'server/login! (fifql/wrap-procedure 2 login!)
        :doc "( username password -- ) Login to a user session."
        :group group-name)
 
-      (fifql/set-word 'server/logout! s-logout!
+      (fifql/set-word 'server/logout! (fifql/wrap-procedure 0 logout!)
        :doc "( -- ) Logout of the current user session."
+       :group group-name)
+
+      (fifql/set-word 'server/session-type (fifql/wrap-function 0 session-type)
+       :doc doc-session-type
        :group group-name)))
 

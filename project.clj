@@ -8,28 +8,28 @@
                  [org.clojure/clojurescript "1.10.520" :scope "provided"]
                  [org.clojure/core.async "0.4.500"]
 
-                 [funcool/bide "1.6.0"]              ;; Routing Library (cljs)
-                 [buddy "2.0.0"]                     ;; Security Library (clj)
-                 [compojure "1.6.1"]                 ;; Routing Library (clj)
-                 [com.taoensso/encore "2.115.0"]     ;; Utility Library (clj/cljs)
-                 [environ "1.1.0"]                   ;; Configuration
-                 [hiccup "1.0.5"]                    ;; HTML Generation
-                 [http-kit "2.3.0"]                  ;; HTTP Server
-                 [me.raynes/fs "1.4.6"]              ;; Filesystem Utilities
-                 [mount "0.1.16"]                    ;; Dependency Management Library
-                 [re-frame "0.10.8"]                 ;; CLJS React State Management for Reagent
-                 [reagent "0.8.1"]                   ;; React Wrapper Library
-                 [ring/ring-defaults "0.3.2"]        ;; Useful Http Middleware Defaults
-                 [com.taoensso/timbre "4.10.0"]      ;; Logging Library
+                 [funcool/bide "1.6.0"]               ;; Routing Library (cljs)
+                 [buddy "2.0.0"]                      ;; Security Library (clj)
+                 [compojure "1.6.1"]                  ;; Routing Library (clj)
+                 [com.taoensso/encore "2.115.0"]      ;; Utility Library (clj/cljs)
+                 [environ "1.1.0"]                    ;; Configuration
+                 [hiccup "1.0.5"]                     ;; HTML Generation
+                 [http-kit "2.3.0"]                   ;; HTTP Server
+                 [me.raynes/fs "1.4.6"]               ;; Filesystem Utilities
+                 [mount "0.1.16"]                     ;; Dependency Management Library
+                 [re-frame "0.10.8"]                  ;; CLJS React State Management for Reagent
+                 [reagent "0.8.1"]                    ;; React Wrapper Library
+                 [ring/ring-defaults "0.3.2"]         ;; Useful Http Middleware Defaults
+                 [com.taoensso/timbre "4.10.0"]       ;; Logging Library
 
                  ;; fif libraries
-                 [fif-lang/fif      "1.4.0"]         ;; Stack-based Scripting Language
-                 [fif-lang/fifql    "1.4.0"]         ;; Stack-based Query API
-                 [fif-lang/fifiql   "1.5.0-SNAPSHOT"];; Interactive Query Page for Fifql Development
-                 [fif-lang/fifql-fx "1.4.0"]         ;; Reagent Fifql Effect Handler
+                 [fif-lang/fif      "1.4.0"]          ;; Stack-based Scripting Language
+                 [fif-lang/fifql    "1.5.0-SNAPSHOT"] ;; Stack-based Query API
+                 [fif-lang/fifiql   "1.5.0-SNAPSHOT"] ;; Interactive Query Page for Fifql Development
+                 [fif-lang/fifql-fx "1.4.0"]          ;; Reagent Fifql Effect Handler
 
                  ;; Database
-                 [org.xerial/sqlite-jdbc "3.28.0"]   ;; Sqlite
+                 [org.xerial/sqlite-jdbc "3.28.0"]    ;; Sqlite
                  [juxt/crux-core "19.09-1.4.0-alpha"]
                  [juxt/crux-jdbc "19.09-1.4.0-alpha"]
                  [juxt/crux-rocksdb "19.09-1.4.0-alpha"]]

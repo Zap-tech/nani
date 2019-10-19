@@ -4,8 +4,10 @@
    [taoensso.timbre :as log]
    [crux.api :as crux]
    [fifql.core :as fifql]
+   [fifql.server :refer [*context*]]
    [nani.spec]
 
+   [nani.server.fifql.auth :as auth]
    [nani.server.db :refer [db]]
    [nani.server.model.user :as model.user]
    [nani.server.model.discussion :as model.discussion]))
@@ -61,6 +63,33 @@ Discussion model data in the form of a map structure for the given discussion na
     (throw (ex-info "Unable to retrieve discussion data for given discussion name" {:discussion/name name}))))
 
 
+(def ^:private doc-create-discussion! "
+( opts -- ) Create a discussion board
+
+# Keyword Arguments
+
+opts - A map of initial user configuration values
+
+  :discussion/name - Name of the discussion board
+
+  :discussion/user-privileges - Map of users with discussion board privileges
+")
+
+
+(defn create-discussion!
+  [discussion-document]
+  (auth/check-privileges :user 'discussion/create!)
+  (let [{username :user/username} *context*]
+        
+    (cond
+     (not username)
+     (throw (ex-info "You must Login with `server/login!` to create a new discussion")))
+    (model.discussion/new!
+     (-> discussion-document
+         (select-keys [:discussion/name :discussion/user-privileges])
+         (assoc :user/username username)))))
+
+
 (defn import-nani-discussion-libs [sm]
   (-> sm
 
@@ -69,5 +98,9 @@ Discussion model data in the form of a map structure for the given discussion na
        :group :nani.discussion)
 
       (fifql/set-word 'discussion/get (fifql/wrap-function 1 #'get-discussion)
+       :doc (str/trim doc-get-discussion "\n")
+       :group :nani.discussion)
+
+      (fifql/set-word 'discussion/create! (fifql/wrap-procedure 1 #'create-discussion!)
        :doc (str/trim doc-get-discussion "\n")
        :group :nani.discussion)))
