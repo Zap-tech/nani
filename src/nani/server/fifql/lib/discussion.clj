@@ -80,14 +80,14 @@ opts - A map of initial user configuration values
   [discussion-document]
   (auth/check-privileges :user 'discussion/create!)
   (let [{username :user/username} *context*]
-        
-    (cond
-     (not username)
-     (throw (ex-info "You must Login with `server/login!` to create a new discussion")))
     (model.discussion/new!
      (-> discussion-document
          (select-keys [:discussion/name :discussion/user-privileges])
-         (assoc :user/username username)))))
+         (assoc :user/username username)))
+    (println (str "Successfully Created Discussion Board '" (:discussion/name discussion-document) "'"))))
+
+
+;; (model.discussion/new! {:user/username "benzap" :discussion/name "All"})
 
 
 (defn import-nani-discussion-libs [sm]
@@ -102,5 +102,5 @@ opts - A map of initial user configuration values
        :group :nani.discussion)
 
       (fifql/set-word 'discussion/create! (fifql/wrap-procedure 1 #'create-discussion!)
-       :doc (str/trim doc-get-discussion "\n")
+       :doc (str/trim doc-create-discussion! "\n")
        :group :nani.discussion)))

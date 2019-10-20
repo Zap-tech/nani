@@ -34,7 +34,7 @@
 
 
 (defn new!
-  [{:keys [:user/username] :as discussion-document}]
+  [{:keys [:user/username :discussion/name] :as discussion-document}]
   (cond
     (not (model.user/id username))
     (throw (ex-info "Cannot create discussion, given user does not exist" {:user/username username}))
@@ -62,7 +62,7 @@
         discussion-document]
     (cond
       (not (id discussion-name))
-      (throw (ex-info "Unable to update non-existant dicsussion" {:discussion/name discussion-name}))
+      (throw (ex-info "Unable to update non-existant discussion" {:discussion/name discussion-name}))
 
       (not= discussion-id (id discussion-name))
       (throw (ex-info "Given discussion document is invalid"

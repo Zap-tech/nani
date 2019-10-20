@@ -35,34 +35,38 @@
 
       :user
       (when-not (contains? #{:user :moderator :admin :owner} session-type)
-        (ex-info "Given session does not have the proper privileges to call this word function."
-                 {:error-type ::not-privileged
-                  :fname fname
-                  :current-session-type session-type
-                  :required-session-type required-session-type}))
+        (throw
+         (ex-info "Given session does not have the proper privileges to call this word function."
+                  {:error-type ::not-privileged
+                   :fname fname
+                   :current-session-type session-type
+                   :required-session-type required-session-type})))
 
       :moderator
       (when-not (contains? #{:moderator :admin :owner} session-type)
-        (ex-info "Given session does not have the proper privileges to call this word function."
-                 {:error-type ::not-privileged
-                  :fname fname
-                  :current-session-type session-type
-                  :required-session-type required-session-type}))
+        (throw
+         (ex-info "Given session does not have the proper privileges to call this word function."
+                  {:error-type ::not-privileged
+                   :fname fname
+                   :current-session-type session-type
+                   :required-session-type required-session-type})))
 
       :admin
       (when-not (contains? #{:admin :owner} session-type)
-        (ex-info "Given session does not have the proper privileges to call this word function."
-                 {:error-type ::not-privileged
-                  :fname fname
-                  :current-session-type session-type
-                  :required-session-type required-session-type}))
+        (throw
+         (ex-info "Given session does not have the proper privileges to call this word function."
+                  {:error-type ::not-privileged
+                   :fname fname
+                   :current-session-type session-type
+                   :required-session-type required-session-type})))
 
       :owner
       (when-not (contains? #{:owner} session-type)
-        (ex-info "Given session does not have the proper privileges to call this word function."
-                 {:error-type ::not-privileged
-                  :fname fname
-                  :current-session-type session-type
-                  :required-session-type required-session-type}))
+        (throw
+         (ex-info "Given session does not have the proper privileges to call this word function."
+                  {:error-type ::not-privileged
+                   :fname fname
+                   :current-session-type session-type
+                   :required-session-type required-session-type})))
 
       (throw (ex-info "Unknown session-type in `check-privileges` function" {:session-type required-session-type})))))

@@ -3,6 +3,3 @@
 
 (defn random-uuid []
   (java.util.UUID/randomUUID))
-
-
-;; (random-uuid)

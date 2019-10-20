@@ -51,10 +51,10 @@
 (s/def :discussion/id uuid?)
 (s/def :discussion/name string?)
 (s/def :discussion/user-privileges
-  (s/map-of :user/username #{:privilege/owner
-                             :privilege/admin
-                             :privilege/moderator
-                             :privilege/guest}))
+  (s/map-of :user/id #{:privilege/owner
+                       :privilege/admin
+                       :privilege/moderator
+                       :privilege/guest}))
 
 
 ;; Post
