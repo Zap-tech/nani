@@ -3,9 +3,11 @@
    [clojure.spec.alpha :as s]
    [cuerdas.core :as str]))
 
+
 ;;
 ;; Helper Functions
 ;;
+
 
 (defn strict-conform
   "Checks the given `value` against the given `spec` for
@@ -16,7 +18,7 @@
 
   ```clojure
   (try 
-   (strict-conform str? 2)
+   (strict-conform string? 2)
    (catch Exception ex
     (let [msg (-> (ex-data ex) :message)]
       (println \"Failed, Reason: \" msg))))
@@ -30,6 +32,9 @@
              :message (s/explain-str spec value)}))))
 
 
+(def not-empty? #(not (empty? %)))
+
+
 ;;
 ;; Fundamental Specs
 ;;
@@ -40,16 +45,17 @@
 
 ;; User
 (s/def :user/id uuid?)
-(s/def :user/username string?)
+(s/def :user/username (s/and string? #(re-matches #"[a-zA-Z0-9_\-]{2,30}" %)))
 (s/def :user/email string?) ;; TODO: email verification
-(s/def :user/fullname string?)
-(s/def :user/password-hash string?)
+(s/def :user/first-name (s/and string? not-empty?))
+(s/def :user/last-name (s/and string? not-empty?))
+(s/def :user/password-hash (s/and string? not-empty?))
 (s/def :user/verified? boolean?)
 
 
 ;; Discussion
 (s/def :discussion/id uuid?)
-(s/def :discussion/name string?)
+(s/def :discussion/name (s/and string? #(> (count %) 2)))
 (s/def :discussion/user-privileges
   (s/map-of :user/id #{:privilege/owner
                        :privilege/admin
@@ -59,7 +65,7 @@
 
 ;; Post
 (s/def :post/id uuid?)
-(s/def :post/title string?)
+(s/def :post/title (s/and string? not-empty?))
 (s/def :post/text string?)
 (s/def :post/type #{:post-type/text :post-type/link})
 (s/def :post/votes int?)
@@ -67,7 +73,7 @@
 
 ;; Comment
 (s/def :comment/id uuid?)
-(s/def :comment/text string?)
+(s/def :comment/text (s/and string? not-empty?))
 (s/def :comment/reference uuid?)
 (s/def :comment/type #{:comment-type/post :comment-type/comment})
 (s/def :comment/votes int?)

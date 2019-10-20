@@ -5,6 +5,7 @@
    [nani.server.fifql.lib.core :as lib.core :refer [import-nani-core-libs]]
    [nani.server.fifql.lib.user :as lib.user :refer [import-nani-user-libs]]
    [nani.server.fifql.lib.discussion :as lib.discussion :refer [import-nani-discussion-libs]]
+   [nani.server.fifql.lib.post :as lib.post :refer [import-nani-post-libs]]
    [nani.server.fifql.lib.me :as lib.me :refer [import-nani-me-libs]]))
 
 
@@ -15,4 +16,5 @@
       import-nani-core-libs
       import-nani-user-libs
       import-nani-discussion-libs
+      import-nani-post-libs
       import-nani-me-libs))

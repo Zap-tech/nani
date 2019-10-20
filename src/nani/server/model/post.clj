@@ -22,16 +22,24 @@
             :where [['?id :post/id id]
                     ['?id :model/type :post]]})))
 
+(def discussion-blacklist
+  #{"All" "Random"})
+
 
 (defn new!
   [post-document]
-  (let [{user-id :user/id discussion-id :discussion/id} post-document]
+  (log/debug "Creating new post..." post-document)
+  (let [{user-id :user/id discussion-id :discussion/id} post-document
+        discussion-name (some-> (crux/entity (crux/db db) discussion-id) :discussion/name)]
     (cond
       (not (model.user/exists? user-id))
       (throw (ex-info "Cannot create post, given user does not exist" {:user/id user-id}))
 
       (not (model.discussion/exists? discussion-id))
       (throw (ex-info "Cannot create post, given discussion does not exist" {:discussion/id discussion-id}))
+
+      (contains? discussion-blacklist discussion-name)
+      (throw (ex-info "Cannot create posts for pseudo-discussion boards" {:discussion/blacklist discussion-blacklist}))
 
       :else
       (let [post-id (random-uuid)
