@@ -68,20 +68,17 @@
 (s/def :post/title (s/and string? not-empty?))
 (s/def :post/text string?)
 (s/def :post/type #{:post-type/text :post-type/link})
-(s/def :post/votes int?)
 
 
 ;; Comment
 (s/def :comment/id uuid?)
 (s/def :comment/text (s/and string? not-empty?))
 (s/def :comment/reference uuid?)
-(s/def :comment/votes int?)
 
 
 ;; Vote
 (s/def :vote/id uuid?)
 (s/def :vote/value #{:vote-value/upvote :vote-value/downvote :vote-value/neutral})
-(s/def :vote/type #{:vote-type/post :vote-type/comment})
 (s/def :vote/reference uuid?)
 
 
@@ -117,8 +114,7 @@
                 :user/id
                 :post/title
                 :post/text
-                :post/type
-                :post/votes]))
+                :post/type]))
 
 
 (s/def :comment/model
@@ -126,8 +122,7 @@
                 :model/type
                 :comment/id
                 :comment/text
-                :comment/reference
-                :comment/votes]))
+                :comment/reference]))
 
 
 (s/def :vote/model
@@ -135,5 +130,4 @@
                 :model/type
                 :vote/id
                 :vote/value
-                :vote/type
                 :vote/reference]))

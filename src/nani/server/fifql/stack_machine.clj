@@ -7,6 +7,7 @@
    [nani.server.fifql.lib.discussion :as lib.discussion :refer [import-nani-discussion-libs]]
    [nani.server.fifql.lib.post :as lib.post :refer [import-nani-post-libs]]
    [nani.server.fifql.lib.comment :as lib.comment :refer [import-nani-comment-libs]]
+   [nani.server.fifql.lib.vote :as lib.vote :refer [import-nani-vote-libs]]
    [nani.server.fifql.lib.me :as lib.me :refer [import-nani-me-libs]]))
 
 
@@ -19,4 +20,5 @@
       import-nani-discussion-libs
       import-nani-post-libs
       import-nani-comment-libs
+      import-nani-vote-libs
       import-nani-me-libs))

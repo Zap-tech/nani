@@ -64,7 +64,7 @@ opts -- A map of options
   (-> sm
 
       (fifql/set-word 'comment/list (fifql/wrap-function 1 #'list-comments)
-       :doc (str/trim doc-list-post-comments "\n")
+       :doc (str/trim doc-list-comments "\n")
        :group :nani.comment)))
 
 

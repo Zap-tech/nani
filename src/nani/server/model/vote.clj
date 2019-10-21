@@ -17,13 +17,13 @@
    [nani.server.model.vote :as model.vote]))
 
 
-(defn exists? [vote-id user-id]
-  (not-empty
-   (crux/q (crux/db db)
-           {:find ['?id]
-            :where [['?id :vote/id vote-id]
-                    ['?id :user/id user-id]
-                    ['?id :model/type :vote]]})))
+(defn exists? [vote-id]
+  (when vote-id
+    (not-empty
+     (crux/q (crux/db db)
+             {:find ['?id]
+              :where [['?id :vote/id vote-id]
+                      ['?id :model/type :vote]]}))))
 
 
 (defn new!
@@ -31,9 +31,7 @@
   (let [{user-id :user/id} vote-document]
     (cond
       (not (model.user/exists? user-id))
-      (throw (ex-info "Cannot create post vote, given user does not exist" {:user/id user-id}))
-
-      ;; TODO make sure vote reference exists based on vote type
+      (throw (ex-info "Cannot create vote, given user does not exist" {:user/id user-id}))
 
       :else
       (let [vote-id (random-uuid)
