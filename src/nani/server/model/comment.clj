@@ -17,11 +17,12 @@
 
 
 (defn exists? [id]
-  (not-empty
-   (crux/q (crux/db db)
-           {:find ['?id]
-            :where [['?id :post/id id]
-                    ['?id :model/type :comment]]})))
+  (when (uuid? id)
+    (not-empty
+     (crux/q (crux/db db)
+             {:find ['?id]
+              :where [['?id :post/id id]
+                      ['?id :model/type :comment]]}))))
 
 
 (defn new!
@@ -29,7 +30,7 @@
   (let [{user-id :user/id} comment-document]
     (cond
       (not (model.user/exists? user-id))
-      (throw (ex-info "Cannot create post comment, given user does not exist" {:user/id user-id}))
+      (throw (ex-info "Cannot create comment, given user does not exist" {:user/id user-id}))
 
       :else
       (let [comment-id (random-uuid)

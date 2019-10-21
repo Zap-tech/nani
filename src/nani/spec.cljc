@@ -75,7 +75,6 @@
 (s/def :comment/id uuid?)
 (s/def :comment/text (s/and string? not-empty?))
 (s/def :comment/reference uuid?)
-(s/def :comment/type #{:comment-type/post :comment-type/comment})
 (s/def :comment/votes int?)
 
 
@@ -128,7 +127,6 @@
                 :comment/id
                 :comment/text
                 :comment/reference
-                :comment/type
                 :comment/votes]))
 
 

@@ -26,7 +26,7 @@ opts -- A map of options
 
   :offset - The offset of the listing for pagination [default: 0]
 
-  :order-by - Method of sorting the user listing [default: :discussion/name]
+  :order-by - Method of sorting the listing [default: :post/votes]
 ")
 
 
@@ -58,11 +58,13 @@ opts -- A map of options
 
 
 (def doc-new-post! "
-( post-document -- ) Creates a new post.
+( post-document -- post-id ) Creates a new post, and returns the
+  post-id
 
 # Keyword Arguments
 
-post-document - Post Document containing key-values corresponding to a post.
+post-document - Post Document containing key-values corresponding to a
+  post.
 
 # Required `post-document` Options
 
@@ -75,7 +77,8 @@ post-document - Post Document containing key-values corresponding to a post.
 `:post/type` - The type of post. Either `:post-type/text`, or
 `:post-type/link` [default: `:post-type/text`]
 
-`:post/text` - The URL link, or the text to display in the post
+`:post/text` - The URL link, or the text to display in the
+  post [default: \"\"]
 ")
 
 

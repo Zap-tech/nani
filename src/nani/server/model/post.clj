@@ -16,11 +16,13 @@
 
 
 (defn exists? [id]
-  (not-empty
-   (crux/q (crux/db db)
-           {:find ['?id]
-            :where [['?id :post/id id]
-                    ['?id :model/type :post]]})))
+  (when (uuid? id)
+    (not-empty
+     (crux/q (crux/db db)
+             {:find ['?id]
+              :where [['?id :post/id id]
+                      ['?id :model/type :post]]}))))
+
 
 (def discussion-blacklist
   #{"All" "Random"})
@@ -49,7 +51,8 @@
              {:crux.db/id post-id
               :post/id post-id
               :model/type :post})]
-        (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :post/model post-model)]])))))
+        (crux/submit-tx db [[:crux.tx/put (nani.spec/strict-conform :post/model post-model)]])
+        post-id))))
 
 
 (defn update!
